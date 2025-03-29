@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import QuienesSomos from '../components/Quienes_somos.vue'; // Importación corregida
 
 // Estado reactivo para mostrar/ocultar el botón
 const showScrollTopButton = ref(false);
@@ -48,52 +49,19 @@ onMounted(() => {
 
     <!-- Sección principal -->
     <section id="section-main" class="min-h-screen flex flex-col justify-center items-center bg-[#DBE6ED] rounded-lg shadow-md">
-      <h1>Que es 011.project</h1>
-      <p>Una plataforma para la gestión de eventos y actividades.</p>
+      <h1 class="text-6xl sm:text-4xl font-bold text-[#431605] font-poppins mb-4">Que es 011.project</h1>
+      <p class="text-lg text-[#1F1E1E]">Una plataforma para la gestión de eventos y actividades.</p>
     </section>
 
     <!-- Sección Quienes Somos -->
-    <section id="section-quienes-somos" class="min-h-screen flex flex-col justify-center items-center bg-[#A6BCCB] rounded-lg shadow-md">
-      <h1 class="text-5xl font-bold text-[#431605] mt-12 mb-12 font-poppins text-center">Quienes Somos</h1>
-
-      <!-- Pablo -->
-      <div class="fade-in flex flex-col md:flex-row items-center md:items-start w-full px-4 mb-12 bg-[#B7CDDA] py-8 rounded-lg shadow-md">
-        <img
-          src="../assets/Pablo.png"
-          alt="Imagen de Pablo"
-          class="fade-in-left w-full md:w-1/2 max-w-sm rounded-lg shadow-md drop-shadow-lg"
-        />
-        <div class="md:ml-6 mt-4 md:mt-0 text-left">
-          <h2 class="text-2xl font-bold text-[#431605] text-center md:text-left">Pablo</h2>
-          <ul class="list-disc list-inside text-[#1F1E1E]">
-            <li>Aquí va un apartado</li>
-            <li>Aquí va otro apartado</li>
-            <li>Otro apartado más</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Noelia -->
-      <div class="fade-in flex flex-col md:flex-row-reverse items-center md:items-start w-full px-4 bg-[#DBE6ED] py-8 rounded-lg shadow-md">
-        <img
-          src="../assets/Noe.png"
-          alt="Imagen de Noelia"
-          class="fade-in-right w-full md:w-1/2 max-w-sm rounded-lg shadow-md drop-shadow-lg"
-        />
-        <div class="md:mr-6 mt-4 md:mt-0 text-left">
-          <h2 class="text-2xl font-bold text-[#431605] text-center md:text-left">Noelia</h2>
-          <ul class="list-disc list-inside text-[#1F1E1E]">
-            <li>Aquí va un apartado</li>
-            <li>Aquí va otro apartado</li>
-            <li>Otro apartado más</li>
-          </ul>
-        </div>
-      </div>
+    <section id="section-quienes-somos" class="min-h-screen flex flex-col justify-center items-center bg-[#A6BCCB] rounded-lg shadow-md p-8">
+      <h1 class="text-5xl sm:text-3xl font-bold text-[#431605] mt-12 mb-12 font-poppins text-center">Quienes Somos</h1>
+      <QuienesSomos />
     </section>
 
     <!-- Footer -->
-    <footer class="min-h-screen flex justify-center items-center bg-[#DBE6ED] rounded-lg shadow-md">
-      <p>© 2025 Mi Proyecto</p>
+    <footer id="footer" class="min-h-screen flex justify-center items-center bg-[#DBE6ED] rounded-lg shadow-md">
+      <p class="text-[#825336]">© 2025 Mi Proyecto</p>
     </footer>
   </main>
 </template>
@@ -160,16 +128,79 @@ footer {
 
 /* Ajuste de tamaño máximo para las imágenes */
 img {
-  max-width: 100%; /* Asegura que las imágenes no excedan el ancho del contenedor */
-  height: auto; /* Mantiene la proporción de las imágenes */
+  max-width: 100%;
+  height: auto; 
 }
 
 .max-w-sm {
-  max-width: 300px; /* Tamaño máximo para las imágenes */
+  max-width: 300px;
 }
 
 /* Nueva clase para sombras en imágenes */
 .drop-shadow-lg {
   filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.3));
+}
+
+/* Estilo base para tarjetas */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  width: 300px; /* Ajusta el ancho según tus necesidades */
+  margin: 0 auto; /* Para centrar la tarjeta dentro de la columna */
+  min-height: 350px; /* Altura mínima para mostrar contenido y permitir el slide horizontal */
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+.card img {
+  transition: transform 0.5s ease;
+}
+
+/* 
+   Contenido desplegable compartido:
+   - Ocultamos el bloque (text-block) desplazándolo horizontalmente y con opacity 0.
+   - Al hacer hover en la tarjeta, se deslizará y se hará visible.
+   - Ajustamos display: flex para centrar el contenido en medio.
+*/
+.text-block {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.7); /* Ejemplo de fondo semitransparente */
+  box-sizing: border-box;
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+/* Tarjeta de Pablo: se despliega desde la derecha */
+.card-pablo .text-block {
+  right: 0;
+  /* Iniciamos con un translate positivo para que venga desde la derecha (100% = ancho total) */
+  transform: translateX(100%);
+}
+
+.card-pablo:hover .text-block {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Tarjeta de Noelia: se despliega desde la izquierda */
+.card-noelia .text-block {
+  left: 0;
+  /* Iniciamos con un translate negativo para que venga desde la izquierda */
+  transform: translateX(-100%);
+}
+
+.card-noelia:hover .text-block {
+  transform: translateX(0);
+  opacity: 1;
 }
 </style>
