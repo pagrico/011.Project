@@ -49,7 +49,7 @@ onMounted(() => {
 
     <!-- Sección principal -->
     <section id="section-main" class="min-h-screen flex flex-col justify-center items-center bg-[#DBE6ED] rounded-lg shadow-md">
-      <h1 class="text-6xl sm:text-4xl font-bold text-[#431605] font-poppins mb-4">Que es 011.project</h1>
+      <h1 class="text-6xl sm:text-4xl font-bold text-[#431605] font-poppins mb-4">Que es 011.Project</h1>
       <p class="text-lg text-[#1F1E1E]">Una plataforma para la gestión de eventos y actividades.</p>
     </section>
 

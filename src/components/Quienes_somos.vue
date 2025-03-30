@@ -65,6 +65,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden; /* Asegura que la imagen no se salga del contenedor */
+  
 }
 
 .img-bx img {

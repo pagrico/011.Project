@@ -21,7 +21,7 @@ const response = ref(null);
 // Función para obtener datos del backend
 const fetchData = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/backend/api.php'); // Cambia la URL si es necesario
+    const res = await axios.get('http://localhost:8080/Apis/API_prueba.php'); // URL corregida
     response.value = res.data; // Almacena la respuesta en el estado
   } catch (error) {
     console.error('Error al conectar con el backend:', error);
