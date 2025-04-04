@@ -52,8 +52,9 @@ body {
   background: #fff;
   border-radius: 40px;
   box-shadow: 0 20px 25px rgba(0, 0, 0, 0.25);
-  transition: 1s;
+  transition: 1.2s;
   overflow: hidden;
+  transition: width 1.2s ease-in-out; /* Ajustado a 1.2 segundos */
 }
 
 .card:hover {
@@ -74,7 +75,7 @@ body {
   object-fit: contain; /* Evita recortes en la imagen */
   object-position: center bottom; /* Pega la imagen al fondo del card */
   transform: scale(1) translateX(0); /* Posición inicial */
-  transition: transform 1.2s ease-in-out; /* Cambiado a 1.2s */
+  transition: transform 1.2s ease-in-out, object-position 1.2s ease-in-out; /* Ajustado a 1.2 segundos */
   filter: drop-shadow( 10px 10px 10px rgba(0, 0, 0, 0.5)); /* Aplica sombra al contorno de la imagen */
 }
 
@@ -90,6 +91,11 @@ body {
 
 .card:hover .img-bx img {
   transform: scale(1.02); /* Reduce el zoom para evitar que la imagen se salga */
+}
+
+.card .img-bx img {
+  transform: scale(1) translateX(0); /* Transición para volver al estado original */
+  object-position: center bottom; /* Posición inicial */
 }
 
 .card:nth-child(1):hover .img-bx img {
@@ -110,9 +116,9 @@ body {
   height: 200%;
   z-index: 1; /* Por debajo de la imagen cuando no hay hover */
   padding: 20px;
-  background: #fff;
+  background: none;
   opacity: 0; /* Oculta el contenido inicialmente */
-  transition: opacity 1s ease-in-out, transform 1s ease-in-out; 
+  transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out; /* Ajustado a 1.2 segundos */
 }
 
 .card.reverse .content {
@@ -128,6 +134,10 @@ body {
   opacity: 1; /* Muestra el contenido */
   transform: translateX(-100%); /* Mueve el contenido hacia la izquierda para que se alinee con el card expandido */
   z-index: 10; /* Asegura que el contenido quede por encima con hover */
+}
+
+.card .content {
+  transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out; /* Ajustado a 1.2 segundos */
 }
 
 .content h3 {
@@ -172,7 +182,8 @@ body {
     width: 350px; /* Evita expansión en tablets */
   }
   .content {
-    width: 350px; /* Ajusta contenido en tablets */
+    width: 350px;
+    background: white; /* Ajusta contenido en tablets */
   }
 }
 
@@ -196,6 +207,7 @@ body {
     height: auto;
     transform: none;
     opacity: 1; /* Muestra el contenido siempre en móviles */
+    background: white; /* Fondo blanco en responsive */
   }
   .card.reverse .content,
   .card.reverse:hover .content,
