@@ -1,7 +1,20 @@
 <script>
+import TAlert from "../alerts/TAlert.vue";
+
 export default {
+    components: {
+        TAlert,
+    },
     props: {
         isOpen: Boolean, // Estado recibido del componente padre
+    },
+    data() {
+        return {
+            identifier: "", // Correo o login
+            password: "",
+            rememberMe: false, // Estado del checkbox "Recuérdame"
+            errorMessage: "",
+        };
     },
     methods: {
         closeModal() {
@@ -10,6 +23,77 @@ export default {
         switchToRegister() {
             this.$emit("switchToRegister"); // Emite un evento para cambiar al modal de registro
         },
+        async login() {
+            try {
+                const response = await fetch("http://localhost:8080/Apis/API_InicioSesion_Usuario.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        identifier: this.identifier,
+                        password: this.password,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                // Registrar el texto de la respuesta para depuración
+                const responseText = await response.text();
+                console.log("Respuesta del servidor:", responseText);
+
+                let data;
+                try {
+                    data = JSON.parse(responseText); // Intentar analizar como JSON
+                } catch (jsonError) {
+                    throw new Error("Respuesta JSON no válida");
+                }
+
+                if (data.success) {
+                    localStorage.setItem("userData", JSON.stringify({
+                        name: data.nombre,
+                        apellidos: data.apellidos
+                    }));
+
+                    // Guardar en localStorage si "Recuérdame" está activado
+                    if (this.rememberMe) {
+                        localStorage.setItem("userSession", JSON.stringify({
+                            identifier: this.identifier,
+                            password: this.password,
+                        }));
+                    } else {
+                        localStorage.removeItem("userSession");
+                    }
+
+                    this.closeModal();
+                } else {
+                    this.setErrorMessage(data.error || "Error al iniciar sesión");
+                }
+            } catch (error) {
+                console.error("Error en login:", error); // Mostrar error en la consola
+                this.setErrorMessage(error.message || "Error de conexión con el servidor");
+            }
+        },
+        setErrorMessage(message) {
+            this.errorMessage = message;
+            setTimeout(() => {
+                this.errorMessage = "";
+            }, 3000); // El mensaje desaparece después de 3 segundos
+        },
+        loadSession() {
+            const savedSession = localStorage.getItem("userSession");
+            if (savedSession) {
+                const { identifier, password } = JSON.parse(savedSession);
+                this.identifier = identifier;
+                this.password = password;
+                this.rememberMe = true;
+            }
+        },
+    },
+    mounted() {
+        this.loadSession(); // Cargar sesión guardada al montar el componente
     },
 };
 </script>
@@ -35,26 +119,33 @@ export default {
                 </div>
                 <!-- Cuerpo del modal -->
                 <div class="p-4 md:p-5">
-                    <form class="space-y-4">
-                        <!-- Correo -->
+                    <form @submit.prevent="login" class="space-y-4">
+                        <!-- Correo o login -->
                         <div>
-                            <label for="email"
-                                class="block mb-2 text-sm font-medium text-[#431605]">Tu correo</label>
-                            <input type="email" id="email" placeholder="name@company.com" required
+                            <label for="identifier" class="block mb-2 text-sm font-medium text-[#431605]">Email o Nombre de usuario</label>
+                            <input v-model="identifier" type="text" id="identifier" placeholder="name@company.com o usuario123" required
                                 class="bg-[#B7CDDA] border border-[#825336] text-[#1F1E1E] text-sm rounded-lg focus:ring-[#C18F67] focus:border-[#C18F67] block w-full p-2.5" />
                         </div>
                         <!-- Contraseña -->
                         <div>
-                            <label for="password"
-                                class="block mb-2 text-sm font-medium text-[#431605]">Tu contraseña</label>
-                            <input type="password" id="password" placeholder="••••••••" required
+                            <label for="password" class="block mb-2 text-sm font-medium text-[#431605]">Tu contraseña</label>
+                            <input v-model="password" type="password" id="password" placeholder="••••••••" required
                                 class="bg-[#B7CDDA] border border-[#825336] text-[#1F1E1E] text-sm rounded-lg focus:ring-[#C18F67] focus:border-[#C18F67] block w-full p-2.5" />
                         </div>
+                        <!-- Mensaje de error -->
+                        <TAlert v-if="errorMessage" variant="danger" dismissible @dismiss="errorMessage = ''">
+                            {{ errorMessage }}
+                        </TAlert>
+                        <!-- Botón de inicio de sesión -->
+                        <button type="submit"
+                            class="w-full text-white bg-[#825336] hover:bg-[#C18F67] focus:ring-4 focus:outline-none focus:ring-[#431605] font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            Iniciar sesión
+                        </button>
                         <!-- Recuérdame -->
                         <div class="flex justify-between">
                             <div class="flex items-start">
                                 <div class="flex items-center h-5">
-                                    <input id="remember" type="checkbox" value=""
+                                    <input v-model="rememberMe" id="remember" type="checkbox"
                                         class="w-4 h-4 border border-[#825336] rounded-sm bg-[#B7CDDA] focus:ring-3 focus:ring-[#C18F67]" />
                                 </div>
                                 <label for="remember"
@@ -62,11 +153,6 @@ export default {
                             </div>
                             <a href="#" class="text-sm text-[#825336] hover:underline">¿Olvidaste tu contraseña?</a>
                         </div>
-                        <!-- Botón de inicio de sesión -->
-                        <button type="submit"
-                            class="w-full text-white bg-[#825336] hover:bg-[#C18F67] focus:ring-4 focus:outline-none focus:ring-[#431605] font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                            Iniciar sesión
-                        </button>
                         <!-- Cambiar a registro -->
                         <div class="text-sm font-medium text-[#1F1E1E]">
                             ¿No tienes cuenta?

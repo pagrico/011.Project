@@ -12,6 +12,9 @@ export default {
       isSesionModalOpen: false, // Estado para el modal de sesión
       isRegistroModalOpen: false, // Estado para el modal de registro
       isMobileMenuOpen: false, // Estado para el menú móvil
+      loggedIn: false,
+      userName: '',
+      userApellidos: '',
     };
   },
   methods: {
@@ -83,8 +86,10 @@ export default {
           </li>
         </ul>
 
-        <!-- Botones en grid -->
-        <div class="grid grid-cols-1 gap-4 mt-4 md:mt-0 md:flex md:space-x-4 md:justify-end">
+        <div v-if="loggedIn" class="md:flex md:space-x-4 md:justify-end">
+          <span class="text-[#1F1E1E] font-medium">Bienvenido {{ userName }} {{ userApellidos }}</span>
+        </div>
+        <div v-else class="grid grid-cols-1 gap-4 mt-4 md:mt-0 md:flex md:space-x-4 md:justify-end">
           <button @click="openSesionModal"
             class="bg-[#DBE6ED] text-[#1F1E1E] hover:bg-[#C18F67] hover:text-white font-medium rounded-lg px-4 py-2 transition-all duration-300">
             Iniciar sesión

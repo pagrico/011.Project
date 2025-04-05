@@ -60,7 +60,7 @@ export default {
         }
 
         const response = await axios.post(
-          "http://localhost:8080/Apis/registro.php",
+          "http://localhost:8080/Apis/API_Registro_Usuario.php",
           formData
         );
         console.log("Server response:", response.data);
@@ -136,21 +136,7 @@ export default {
           </button>
         </div>
         <div class="p-4 md:p-5">
-          <!-- Alertas con TAlert -->
-          <TAlert
-            v-if="errorMessage && errorMessage.length > 0"
-            variant="danger"
-            @dismiss="errorMessage = ''"
-          >
-            {{ errorMessage }}
-          </TAlert>
-          <TAlert
-            v-if="successMessage && successMessage.length > 0"
-            variant="success"
-            @dismiss="successMessage = ''"
-          >
-            {{ successMessage }}
-          </TAlert>
+        
 
           <form @submit.prevent="submitForm" class="grid gap-4 sm:grid-cols-4">
             <!-- Primera línea: Nombre y Apellidos -->
@@ -259,9 +245,26 @@ export default {
                 class="bg-[#B7CDDA] border border-[#825336] text-[#1F1E1E] text-sm rounded-lg focus:ring-[#C18F67] focus:border-[#C18F67] block w-full p-2.5"
               />
             </div>
+  <!-- Alertas con TAlert -->
+  <div class="sm:col-span-4">
 
-            <!-- Botón de envío -->
-            <div class="sm:col-span-4">
+    <TAlert
+    v-if="errorMessage && errorMessage.length > 0"
+    variant="danger"
+    @dismiss="errorMessage = ''"
+    >
+    {{ errorMessage }}
+  </TAlert>
+  <TAlert
+  v-if="successMessage && successMessage.length > 0"
+  variant="success"
+  @dismiss="successMessage = ''"
+  >
+  {{ successMessage }}
+</TAlert>
+</div>        
+<!-- Botón de envío -->
+<div class="sm:col-span-4">
               <button
                 type="submit"
                 class="w-full text-white bg-[#825336] hover:bg-[#C18F67] focus:ring-4 focus:outline-none focus:ring-[#431605] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
