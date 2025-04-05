@@ -1,6 +1,10 @@
 <script setup>
 import { RouterView } from 'vue-router';
 import Nvar from './components/Nvar.vue';
+import { reactive, provide } from "vue";
+
+const user = reactive({ name: null, apellidos: null }); // Variable global reactiva
+provide("user", user); // Proveer la variable
 </script>
 
 <template>
@@ -12,6 +16,12 @@ import Nvar from './components/Nvar.vue';
     <RouterView />
   </main>
 </template>
+
+<script>
+export default {
+  name: "App",
+};
+</script>
 
 <style scoped>
 /* Estilo general para la aplicación */

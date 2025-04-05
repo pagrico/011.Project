@@ -1,5 +1,6 @@
 <script>
 import TAlert from "../alerts/TAlert.vue";
+import { mapActions } from "vuex"; // Importar acciones de Vuex
 
 export default {
     components: {
@@ -12,11 +13,11 @@ export default {
         return {
             identifier: "", // Correo o login
             password: "",
-            rememberMe: false, // Estado del checkbox "Recuérdame"
             errorMessage: "",
         };
     },
     methods: {
+        ...mapActions(["setUsuario"]), // Cambiar el nombre de la acción a "setUsuario"
         closeModal() {
             this.$emit("close"); // Emite un evento para cerrar el modal
         },
@@ -52,21 +53,24 @@ export default {
                 }
 
                 if (data.success) {
-                    localStorage.setItem("userData", JSON.stringify({
+                    // Interpretar el rol como texto
+                    const roleText = data.rol === 1 ? "admin" : "usuario normal";
+
+                    // Actualizar el usuario global con Vuex
+                    this.setUsuario({
+                        identifier: this.identifier,
+                        password: this.password,
                         name: data.nombre,
-                        apellidos: data.apellidos
-                    }));
+                        apellidos: data.apellidos,
+                        rol: roleText,
+                    });
 
-                    // Guardar en localStorage si "Recuérdame" está activado
-                    if (this.rememberMe) {
-                        localStorage.setItem("userSession", JSON.stringify({
-                            identifier: this.identifier,
-                            password: this.password,
-                        }));
-                    } else {
-                        localStorage.removeItem("userSession");
-                    }
+                    localStorage.setItem(
+                        "userData",
+                        JSON.stringify({ name: data.nombre, apellidos: data.apellidos })
+                    );
 
+                    this.$emit("updateUser"); // Emitir evento para actualizar el estado del usuario
                     this.closeModal();
                 } else {
                     this.setErrorMessage(data.error || "Error al iniciar sesión");
@@ -82,18 +86,6 @@ export default {
                 this.errorMessage = "";
             }, 3000); // El mensaje desaparece después de 3 segundos
         },
-        loadSession() {
-            const savedSession = localStorage.getItem("userSession");
-            if (savedSession) {
-                const { identifier, password } = JSON.parse(savedSession);
-                this.identifier = identifier;
-                this.password = password;
-                this.rememberMe = true;
-            }
-        },
-    },
-    mounted() {
-        this.loadSession(); // Cargar sesión guardada al montar el componente
     },
 };
 </script>
@@ -136,23 +128,12 @@ export default {
                         <TAlert v-if="errorMessage" variant="danger" dismissible @dismiss="errorMessage = ''">
                             {{ errorMessage }}
                         </TAlert>
+                        <!-- El mensaje desaparecerá automáticamente después de 3 segundos -->
                         <!-- Botón de inicio de sesión -->
                         <button type="submit"
                             class="w-full text-white bg-[#825336] hover:bg-[#C18F67] focus:ring-4 focus:outline-none focus:ring-[#431605] font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                             Iniciar sesión
                         </button>
-                        <!-- Recuérdame -->
-                        <div class="flex justify-between">
-                            <div class="flex items-start">
-                                <div class="flex items-center h-5">
-                                    <input v-model="rememberMe" id="remember" type="checkbox"
-                                        class="w-4 h-4 border border-[#825336] rounded-sm bg-[#B7CDDA] focus:ring-3 focus:ring-[#C18F67]" />
-                                </div>
-                                <label for="remember"
-                                    class="ms-2 text-sm font-medium text-[#431605]">Recuérdame</label>
-                            </div>
-                            <a href="#" class="text-sm text-[#825336] hover:underline">¿Olvidaste tu contraseña?</a>
-                        </div>
                         <!-- Cambiar a registro -->
                         <div class="text-sm font-medium text-[#1F1E1E]">
                             ¿No tienes cuenta?

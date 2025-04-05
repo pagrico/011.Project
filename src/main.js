@@ -1,15 +1,10 @@
-import './assets/main.css'
-import './assets/main.css'
-import { createApp } from 'vue'
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router"; // Si usas Vue Router
+import store from "./store"; // Si usas Vuex
+import "@/assets/main.css"; // Importar Tailwind CSS
 
-import { createPinia } from 'pinia'
-
-import App from './App.vue'
-import router from './router'
-
-const app = createApp(App)
-
-app.use(createPinia())
-app.use(router)
-
-app.mount('#app')
+createApp(App)
+    .use(router) // Asegúrate de que el router esté configurado
+    .use(store) // Asegúrate de que Vuex esté configurado
+    .mount("#app");
