@@ -71,7 +71,6 @@ export default {
                 duration: ''
             },
             isHovered: false, // Controla si el mouse está sobre el componente
-            isAdmin: false, // Determina si el usuario es administrador
             isDescriptionExpanded: false, // Controla si la descripción está expandida
             isFavorite: false, // Estado para el botón de favorito
             isBookmarked: false // Estado para el botón de marcador
@@ -136,26 +135,41 @@ export default {
         expandDescription() {
             this.isDescriptionExpanded = true;
         },
-        async fetchUsuario() {
-            try {
-                // Simulación de una llamada para obtener los datos del usuario
-                const usuario = await axios.get('/api/usuario'); // Reemplaza con la URL real de tu API
-                this.isAdmin = usuario.data.rol === 'administrador';
-                console.log('Rol del usuario:', usuario.data.rol); // Muestra el rol del usuario en la consola
-            } catch (error) {
-                console.error('Error al obtener los datos del usuario:', error.message);
-            }
-        },
         toggleFavorite() {
             this.isFavorite = !this.isFavorite;
         },
         toggleBookmark() {
             this.isBookmarked = !this.isBookmarked;
+        },
+        async toggleLike() {
+            const videoId = this.extractVideoId(this.videoSrc);
+            try {
+                const response = await fetch('/php/app/Apis/API_likes_y_favoritos.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        action: 'like', 
+                        videoId: videoId 
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    this.isFavorite = !this.isFavorite;
+                    console.log(this.isFavorite ? 'Se dio like al video' : 'Se quitó el like');
+                } else {
+                    console.error(data.error || 'Ocurrió un error inesperado');
+                }
+            } catch (error) {
+                console.error('Error al interactuar con la API:', error);
+            }
         }
     },
     mounted() {
         this.fetchVideoData();
-        this.fetchUsuario(); // Llama a la función para obtener los datos del usuario
     }
 };
 </script>

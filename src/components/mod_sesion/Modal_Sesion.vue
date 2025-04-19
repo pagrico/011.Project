@@ -1,28 +1,26 @@
 <script>
 import TAlert from "../alerts/TAlert.vue";
-import { mapActions } from "vuex"; // Importar acciones de Vuex
 
 export default {
     components: {
         TAlert,
     },
     props: {
-        isOpen: Boolean, // Estado recibido del componente padre
+        isOpen: Boolean,
     },
     data() {
         return {
-            identifier: "", // Correo o login
+            identifier: "",
             password: "",
             errorMessage: "",
         };
     },
     methods: {
-        ...mapActions(["setUsuario"]), // Cambiar el nombre de la acción a "setUsuario"
         closeModal() {
-            this.$emit("close"); // Emite un evento para cerrar el modal
+            this.$emit("close");
         },
         switchToRegister() {
-            this.$emit("switchToRegister"); // Emite un evento para cambiar al modal de registro
+            this.$emit("switchToRegister");
         },
         async login() {
             try {
@@ -41,42 +39,24 @@ export default {
                     throw new Error(`Error HTTP: ${response.status}`);
                 }
 
-                // Registrar el texto de la respuesta para depuración
-                const responseText = await response.text();
-                console.log("Respuesta del servidor:", responseText);
+                const data = await response.json();
 
-                let data;
-                try {
-                    data = JSON.parse(responseText); // Intentar analizar como JSON
-                } catch (jsonError) {
-                    throw new Error("Respuesta JSON no válida");
-                }
+                console.log("Respuesta de la API:", data);
 
                 if (data.success) {
-                    // Interpretar el rol como texto
-                    const roleText = data.rol === 1 ? "admin" : "usuario normal";
-
-                    // Actualizar el usuario global con Vuex
-                    this.setUsuario({
-                        identifier: this.identifier,
-                        password: this.password,
-                        name: data.nombre,
-                        apellidos: data.apellidos,
-                        rol: roleText,
-                    });
-
+                    localStorage.setItem("userId", data.user_id); // Guardar el ID del usuario en localStorage
                     localStorage.setItem(
                         "userData",
-                        JSON.stringify({ name: data.nombre, apellidos: data.apellidos })
+                        JSON.stringify({ name: data.nombre, apellidos: data.apellidos, userId: data.user_id })
                     );
 
-                    this.$emit("updateUser"); // Emitir evento para actualizar el estado del usuario
+                    this.$emit("updateUser");
                     this.closeModal();
                 } else {
                     this.setErrorMessage(data.error || "Error al iniciar sesión");
                 }
             } catch (error) {
-                console.error("Error en login:", error); // Mostrar error en la consola
+                console.error("Error en login:", error);
                 this.setErrorMessage(error.message || "Error de conexión con el servidor");
             }
         },
@@ -84,7 +64,7 @@ export default {
             this.errorMessage = message;
             setTimeout(() => {
                 this.errorMessage = "";
-            }, 3000); // El mensaje desaparece después de 3 segundos
+            }, 3000);
         },
     },
 };

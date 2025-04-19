@@ -1,10 +1,18 @@
 import { createApp } from "vue";
+import { reactive } from "vue"; // Importar reactive
 import App from "./App.vue";
-import router from "./router"; // Si usas Vue Router
-import store from "./store"; // Si usas Vuex
-import "@/assets/main.css"; // Importar Tailwind CSS
+import router from "./router";
+import store from "./store";
+import "@/assets/main.css";
 
-createApp(App)
-    .use(router) // Asegúrate de que el router esté configurado
-    .use(store) // Asegúrate de que Vuex esté configurado
-    .mount("#app");
+// Crear una variable global reactiva para el ID del usuario
+const globalState = reactive({
+    userId: null, // ID del usuario
+});
+
+const app = createApp(App);
+
+// Proveer la variable global a toda la aplicación
+app.provide("globalState", globalState);
+
+app.use(router).use(store).mount("#app");

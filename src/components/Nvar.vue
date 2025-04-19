@@ -72,6 +72,7 @@ export default {
       this.userApellidos = '';
       this.isDropdownOpen = false; // Cerrar el menú desplegable
       localStorage.removeItem("userData");
+      localStorage.removeItem("userId"); // Eliminar también el ID del usuario
     },
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
