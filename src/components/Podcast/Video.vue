@@ -1,57 +1,53 @@
 <template>
     <div 
-        class="video-component bg-white rounded-lg shadow-lg p-4 w-full max-w-lg mx-auto"
+        class="video-component bg-white rounded-lg shadow-lg p-4 w-full max-w-full mx-auto"
         @mouseenter="isHovered = true" 
         @mouseleave="isHovered = false"
     >
-        <div class="relative">
-            <a target="_blank">
-                <img 
-                    :src="thumbnailUrl" 
-                    alt="Video Thumbnail" 
-                    class="w-full rounded-t-lg">
-            </a>
-            <!-- Botón de edición -->
-            <button 
-                v-if="isHovered && isAdmin"
-                class="absolute top-2 left-2 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center"
-            >
-                <span class="material-symbols-outlined">edit</span>
-            </button>
-            <!-- Botón de eliminación -->
-            <button 
-                v-if="isHovered && isAdmin"
-                class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center"
-            >
-                <span class="material-symbols-outlined">delete</span>
-            </button>
-        </div>
-        <div class="mt-4">
-            <!-- Texto introductorio -->
-           
-            <div class="flex justify-between items-center mt-2">
-                <!-- Título con tamaño de fuente ajustado -->
-                <h1 class="text-base font-medium text-left">
-                    {{ videoData.title }}
-                </h1>
-                <!-- Duración ajustada para estar en la misma línea -->
-                <span class="text-sm text-gray-500 whitespace-nowrap">{{ videoData.duration }}</span>
+        <div>
+            <div class="relative">
+                <a :href="youtubeUrl" target="_blank">
+                    <img 
+                        :src="thumbnailUrl" 
+                        alt="Video Thumbnail" 
+                        class="w-full h-auto rounded-t-lg object-cover">
+                </a>
             </div>
-        </div>
-        <!-- Descripción con truncado y enlace de "Leer más" en una línea separada -->
-        <p class="text-sm text-gray-600 text-left mt-2">
-            {{ truncatedDescription }}
-        </p>
-        <p v-if="showReadMore" class="text-sm text-blue-500 text-left cursor-pointer mt-1" @click="expandDescription">
-            Leer más
-        </p>
-        <div class="mt-4 flex justify-end space-x-4">
-            <button>
-                <span class="material-symbols-outlined text-red-500">favorite</span>
-            </button>
-            <button>
-                <span class="material-symbols-outlined text-yellow-500">bookmark</span>
-            </button>
+            <div class="mt-4">
+                <!-- Texto introductorio -->
+                <div class="flex flex-col text-left">
+                    <a :href="youtubeUrl" target="_blank" class="text-base font-bold text-[#5A2D0C]">
+                        {{ videoData.title }}
+                    </a>
+                    <!-- Duración debajo del título -->
+                    <span class="text-sm text-[#825336] mt-1">{{ videoData.duration }}</span>
+                </div>
+            </div>
+            <!-- Descripción con truncado y enlace de "Leer más" en una línea separada -->
+            <p class="text-sm text-[#1F1E1E] text-left mt-4">
+                {{ truncatedDescription }}
+            </p>
+            <p v-if="showReadMore" class="text-sm text-[#C18F67] text-left cursor-pointer mt-1">
+                <a :href="youtubeUrl" target="_blank">Leer más</a>
+            </p>
+            <div class="mt-4 flex justify-end space-x-4">
+                <button @click="toggleFavorite" class="cursor-pointer">
+                    <span 
+                        class="material-symbols-outlined text-red-500" 
+                        :style="{'font-variation-settings': isFavorite ? '\'FILL\' 1, \'wght\' 400, \'GRAD\' 0, \'opsz\' 24' : '\'FILL\' 0, \'wght\' 400, \'GRAD\' 0, \'opsz\' 24'}"
+                    >
+                        favorite
+                    </span>
+                </button>
+                <button @click="toggleBookmark" class="cursor-pointer">
+                    <span 
+                        class="material-symbols-outlined text-yellow-500" 
+                        :style="{'font-variation-settings': isBookmarked ? '\'FILL\' 1, \'wght\' 400, \'GRAD\' 0, \'opsz\' 24' : '\'FILL\' 0, \'wght\' 400, \'GRAD\' 0, \'opsz\' 24'}"
+                    >
+                        bookmark
+                    </span>
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -76,7 +72,9 @@ export default {
             },
             isHovered: false, // Controla si el mouse está sobre el componente
             isAdmin: false, // Determina si el usuario es administrador
-            isDescriptionExpanded: false // Controla si la descripción está expandida
+            isDescriptionExpanded: false, // Controla si la descripción está expandida
+            isFavorite: false, // Estado para el botón de favorito
+            isBookmarked: false // Estado para el botón de marcador
         };
     },
     computed: {
@@ -147,6 +145,12 @@ export default {
             } catch (error) {
                 console.error('Error al obtener los datos del usuario:', error.message);
             }
+        },
+        toggleFavorite() {
+            this.isFavorite = !this.isFavorite;
+        },
+        toggleBookmark() {
+            this.isBookmarked = !this.isBookmarked;
         }
     },
     mounted() {
@@ -165,6 +169,22 @@ export default {
         'opsz' 24;
     display: inline-block;
     vertical-align: middle;
+}
+
+.video-component {
+    max-width: 100%; /* Asegura que el componente ocupe todo el ancho disponible */
+}
+
+img {
+    width: 100%; /* Imagen ocupa todo el ancho del contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+    object-fit: cover; /* Asegura que la imagen se ajuste correctamente */
+}
+
+@media (min-width: 2560px) {
+    .video-component {
+        max-width: 75%; /* Limita el ancho en pantallas 2K o más grandes */
+    }
 }
 </style>
 
