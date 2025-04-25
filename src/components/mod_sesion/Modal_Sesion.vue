@@ -47,7 +47,12 @@ export default {
                     localStorage.setItem("userId", data.user_id); // Guardar el ID del usuario en localStorage
                     localStorage.setItem(
                         "userData",
-                        JSON.stringify({ name: data.nombre, apellidos: data.apellidos, userId: data.user_id })
+                        JSON.stringify({ 
+                            name: data.nombre, 
+                            apellidos: data.apellidos, 
+                            userId: data.user_id,
+                            role: data.rol // Guardar el rol del usuario
+                        })
                     );
 
                     this.$emit("updateUser");

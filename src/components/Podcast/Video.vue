@@ -30,24 +30,6 @@
             <p v-if="showReadMore" class="text-sm text-[#C18F67] text-left cursor-pointer mt-1">
                 <a :href="youtubeUrl" target="_blank">Leer más</a>
             </p>
-            <div class="mt-4 flex justify-end space-x-4">
-                <button @click="toggleFavorite" class="cursor-pointer">
-                    <span 
-                        class="material-symbols-outlined text-red-500" 
-                        :style="{'font-variation-settings': isFavorite ? '\'FILL\' 1, \'wght\' 400, \'GRAD\' 0, \'opsz\' 24' : '\'FILL\' 0, \'wght\' 400, \'GRAD\' 0, \'opsz\' 24'}"
-                    >
-                        favorite
-                    </span>
-                </button>
-                <button @click="toggleBookmark" class="cursor-pointer">
-                    <span 
-                        class="material-symbols-outlined text-yellow-500" 
-                        :style="{'font-variation-settings': isBookmarked ? '\'FILL\' 1, \'wght\' 400, \'GRAD\' 0, \'opsz\' 24' : '\'FILL\' 0, \'wght\' 400, \'GRAD\' 0, \'opsz\' 24'}"
-                    >
-                        bookmark
-                    </span>
-                </button>
-            </div>
         </div>
     </div>
 </template>
@@ -71,9 +53,7 @@ export default {
                 duration: ''
             },
             isHovered: false, // Controla si el mouse está sobre el componente
-            isDescriptionExpanded: false, // Controla si la descripción está expandida
-            isFavorite: false, // Estado para el botón de favorito
-            isBookmarked: false // Estado para el botón de marcador
+            isDescriptionExpanded: false // Controla si la descripción está expandida
         };
     },
     computed: {
@@ -134,38 +114,6 @@ export default {
         },
         expandDescription() {
             this.isDescriptionExpanded = true;
-        },
-        toggleFavorite() {
-            this.isFavorite = !this.isFavorite;
-        },
-        toggleBookmark() {
-            this.isBookmarked = !this.isBookmarked;
-        },
-        async toggleLike() {
-            const videoId = this.extractVideoId(this.videoSrc);
-            try {
-                const response = await fetch('/php/app/Apis/API_likes_y_favoritos.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ 
-                        action: 'like', 
-                        videoId: videoId 
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    this.isFavorite = !this.isFavorite;
-                    console.log(this.isFavorite ? 'Se dio like al video' : 'Se quitó el like');
-                } else {
-                    console.error(data.error || 'Ocurrió un error inesperado');
-                }
-            } catch (error) {
-                console.error('Error al interactuar con la API:', error);
-            }
         }
     },
     mounted() {

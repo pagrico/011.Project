@@ -138,12 +138,6 @@ export default {
             <div v-if="isDropdownOpen" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg z-50">
               <ul class="py-2">
                 <li>
-                  <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Me gusta</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Favoritos</a>
-                </li>
-                <li>
                   <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Ajustes</a>
                 </li>
                 <li>
