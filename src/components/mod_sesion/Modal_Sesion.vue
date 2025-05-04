@@ -24,14 +24,19 @@ export default {
         },
         async login() {
             try {
+                console.log("Datos enviados al servidor:", {
+                    identifier: this.identifier.trim(),
+                    password: this.password.trim(),
+                });
+
                 const response = await fetch("http://localhost:8080/Apis/API_InicioSesion_Usuario.php", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        identifier: this.identifier,
-                        password: this.password,
+                        identifier: this.identifier.trim(),
+                        password: this.password.trim(),
                     }),
                 });
 
@@ -58,11 +63,11 @@ export default {
                     this.$emit("updateUser");
                     this.closeModal();
                 } else {
-                    this.setErrorMessage(data.error || "Error al iniciar sesión");
+                    this.setErrorMessage(data.error || "Hubo un problema al iniciar sesión. Por favor, verifica tus datos.");
                 }
             } catch (error) {
                 console.error("Error en login:", error);
-                this.setErrorMessage(error.message || "Error de conexión con el servidor");
+                this.setErrorMessage("No se pudo conectar con el servidor. Por favor, inténtalo más tarde.");
             }
         },
         setErrorMessage(message) {
@@ -99,13 +104,13 @@ export default {
                     <form @submit.prevent="login" class="space-y-4">
                         <!-- Correo o login -->
                         <div>
-                            <label for="identifier" class="block mb-2 text-sm font-medium text-[#431605]">Email o Nombre de usuario</label>
-                            <input v-model="identifier" type="text" id="identifier" placeholder="name@company.com o usuario123" required
+                            <label for="identifier" class="block mb-2 text-sm font-medium text-[#431605]">Correo electrónico o nombre de usuario</label>
+                            <input v-model="identifier" type="text" id="identifier" placeholder="correo@empresa.com o usuario123" required
                                 class="bg-[#B7CDDA] border border-[#825336] text-[#1F1E1E] text-sm rounded-lg focus:ring-[#C18F67] focus:border-[#C18F67] block w-full p-2.5" />
                         </div>
                         <!-- Contraseña -->
                         <div>
-                            <label for="password" class="block mb-2 text-sm font-medium text-[#431605]">Tu contraseña</label>
+                            <label for="password" class="block mb-2 text-sm font-medium text-[#431605]">Contraseña</label>
                             <input v-model="password" type="password" id="password" placeholder="••••••••" required
                                 class="bg-[#B7CDDA] border border-[#825336] text-[#1F1E1E] text-sm rounded-lg focus:ring-[#C18F67] focus:border-[#C18F67] block w-full p-2.5" />
                         </div>
@@ -123,7 +128,7 @@ export default {
                         <div class="text-sm font-medium text-[#1F1E1E]">
                             ¿No tienes cuenta?
                             <a href="#" @click.prevent="switchToRegister"
-                                class="text-[#825336] hover:underline">Regístrate</a>
+                                class="text-[#825336] hover:underline">Regístrate aquí</a>
                         </div>
                     </form>
                 </div>

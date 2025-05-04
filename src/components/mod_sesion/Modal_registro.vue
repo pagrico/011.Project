@@ -54,28 +54,20 @@ export default {
       }
 
       try {
-        const formData = new FormData();
-        for (const key in this.form) {
-          formData.append(key, this.form[key]);
-        }
-
         const response = await axios.post(
           "http://localhost:8080/Apis/API_Registro_Usuario.php",
-          formData
+          JSON.stringify(this.form), // Cambiado a JSON.stringify
+          {
+            headers: {
+              "Content-Type": "application/json", // Aseguramos que el encabezado sea JSON
+            },
+          }
         );
         console.log("Server response:", response.data);
 
         let data = response.data;
-        if (typeof data === "string" && data.includes("Intentando conectar")) {
-          const jsonIndex = data.indexOf("{");
-          if (jsonIndex !== -1) {
-            data = JSON.parse(data.substring(jsonIndex));
-          }
-        }
         if (data.success === true) {
           this.successMessage = data.message;
-          this.errorMessage = "";
-          // Limpiamos posibles errores previos
           this.errorMessage = "";
 
           // Reseteamos formulario
@@ -83,12 +75,12 @@ export default {
             nombre: "",
             apellidos: "",
             email: "",
+            telefono: "",
             login: "",
             password: "",
             confirmPassword: "",
           };
         } else {
-          // Manejo de respuesta sin éxito
           this.successMessage = "";
           this.errorMessage = data.message;
         }
