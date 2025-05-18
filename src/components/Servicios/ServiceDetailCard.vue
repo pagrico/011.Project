@@ -28,6 +28,15 @@
         :serviceTitle="selectedServiceTitle"
         @close="contactModalVisible = false"
       />
+      <!-- GALERÍA DE IMÁGENES: solo si hay imágenes -->
+      <div v-if="service.images && service.images.length" class="mt-10">
+        <h4 class="font-bold text-[#431605] mb-4 text-lg">Galería de trabajos anteriores</h4>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div v-for="(img, idx) in service.images" :key="idx" class="rounded overflow-hidden border border-[#BCAA81] bg-white">
+            <img :src="img" alt="Trabajo anterior" class="w-full h-40 object-cover hover:scale-105 transition-transform duration-200" loading="lazy" />
+          </div>
+        </div>
+      </div>
     </div>
     <div>
       <h4 class="font-bold text-xl text-[#431605] mb-6">Reseñas de clientes</h4>

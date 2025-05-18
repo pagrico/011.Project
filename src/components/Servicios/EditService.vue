@@ -25,6 +25,21 @@
           </select>
         </div>
       </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2 font-medium">Imágenes del servicio</label>
+        <div class="flex mb-2">
+          <input v-model="nuevaImagen" type="url" placeholder="Pega la URL de la imagen y pulsa Añadir" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#BCAA81]">
+          <button type="button" @click="agregarImagen" class="ml-2 px-4 py-2 bg-[#BCAA81] text-white rounded-md">Añadir</button>
+        </div>
+        <div v-if="imagenes.length" class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+          <div v-for="(img, idx) in imagenes" :key="idx" class="relative group">
+            <img :src="img" alt="Imagen subida" class="w-full h-24 object-cover rounded border border-[#BCAA81]">
+            <button type="button" @click="eliminarImagen(idx)" class="absolute top-1 right-1 bg-white bg-opacity-80 rounded-full p-1 text-red-600 hover:text-red-800 opacity-80 group-hover:opacity-100 transition">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
       <div class="flex items-center justify-between">
         <div class="flex items-center">
           <input v-model="form.available" type="checkbox" class="mr-2">
@@ -40,15 +55,48 @@
 </template>
 
 <script setup>
-import { reactive, watch } from 'vue'
+import { reactive, watch, ref } from 'vue'
 const props = defineProps(['service'])
 const emit = defineEmits(['saved', 'cancel'])
 const form = reactive({ ...props.service })
+
+const imagenes = ref([])
+const nuevaImagen = ref('')
+
 watch(() => props.service, (val) => {
   Object.assign(form, val)
+  // Imágenes (array o string JSON)
+  if (Array.isArray(val.imagenes)) {
+    imagenes.value = [...val.imagenes]
+  } else if (typeof val.imagenes === 'string' && val.imagenes.trim().startsWith('[')) {
+    try {
+      imagenes.value = JSON.parse(val.imagenes)
+    } catch {
+      imagenes.value = []
+    }
+  } else if (val.SER_IMAGENES && typeof val.SER_IMAGENES === 'string' && val.SER_IMAGENES.trim().startsWith('[')) {
+    try {
+      imagenes.value = JSON.parse(val.SER_IMAGENES)
+    } catch {
+      imagenes.value = []
+    }
+  } else {
+    imagenes.value = []
+  }
 })
+
+function agregarImagen() {
+  if (nuevaImagen.value.trim() && imagenes.value.length < 12) {
+    imagenes.value.push(nuevaImagen.value.trim())
+    nuevaImagen.value = ''
+  }
+}
+function eliminarImagen(idx) {
+  imagenes.value.splice(idx, 1)
+}
+
 function save() {
   // Lógica para actualizar servicio...
-  emit('saved', form)
+  emit('saved', { ...form, imagenes: imagenes.value })
 }
 </script>

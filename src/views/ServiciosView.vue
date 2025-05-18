@@ -89,6 +89,17 @@ async function fetchServices() {
           incluyeArr = []
         }
       }
+      // Añadir imágenes (array de URLs)
+      let imagesArr = []
+      if (Array.isArray(s.imagenes)) {
+        imagesArr = s.imagenes
+      } else if (typeof s.imagenes === 'string' && s.imagenes.trim().startsWith('[')) {
+        try {
+          imagesArr = JSON.parse(s.imagenes)
+        } catch {
+          imagesArr = []
+        }
+      }
       return {
         id: s.SER_ID,
         icon: s.SER_ICONO,
@@ -103,7 +114,8 @@ async function fetchServices() {
           rating: v.VAL_ESTRELLAS ?? 5,
           text: v.VAL_VALORACION
         })),
-        status: s.SER_ESTADO
+        status: s.SER_ESTADO,
+        images: imagesArr
       }
     })
   } catch (e) {

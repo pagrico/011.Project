@@ -1,6 +1,7 @@
 <template>
   <div class="service-grid-card rounded-lg overflow-hidden p-8 relative">
-    <div class="service-icon text-center">
+    <div class="service-icon text-center mb-4">
+      <!-- Solo icono, sin imágenes -->
       <i :class="['fas', service.icon]"></i>
     </div>
     <h3 class="text-xl font-bold text-[#431605] mb-4 text-center">{{ service.title }}</h3>

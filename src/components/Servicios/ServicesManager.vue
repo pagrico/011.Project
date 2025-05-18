@@ -127,6 +127,24 @@ function editService(service) {
     }
   }
 
+  // Añade la propiedad imagenes (array de URLs)
+  let imagenesArr = []
+  if (Array.isArray(service.images)) {
+    imagenesArr = service.images
+  } else if (typeof service.imagenes === 'string' && service.imagenes.trim().startsWith('[')) {
+    try {
+      imagenesArr = JSON.parse(service.imagenes)
+    } catch {
+      imagenesArr = []
+    }
+  } else if (service.SER_IMAGENES && typeof service.SER_IMAGENES === 'string' && service.SER_IMAGENES.trim().startsWith('[')) {
+    try {
+      imagenesArr = JSON.parse(service.SER_IMAGENES)
+    } catch {
+      imagenesArr = []
+    }
+  }
+
   emit('edit', {
     id: service.id ?? service.SER_ID,
     titulo: service.title ?? service.SER_TITULO,
@@ -136,7 +154,8 @@ function editService(service) {
     precio: parsePrice(service.price ?? service.SER_PRECIO),
     icono: service.icon ?? service.SER_ICONO,
     estado: service.status ?? service.SER_ESTADO,
-    available: service.available
+    available: service.available,
+    imagenes: imagenesArr // <-- AÑADIDO
   })
 }
 </script>
