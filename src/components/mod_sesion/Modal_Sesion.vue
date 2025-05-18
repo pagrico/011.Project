@@ -62,6 +62,7 @@ export default {
 
                     this.$emit("updateUser");
                     this.closeModal();
+                    window.location.reload(); // Refrescar la pantalla después de iniciar sesión
                 } else {
                     this.setErrorMessage(data.error || "Hubo un problema al iniciar sesión. Por favor, verifica tus datos.");
                 }

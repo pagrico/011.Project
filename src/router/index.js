@@ -5,27 +5,29 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      // Ruta de inicio de la aplicación
       path: '/',
       name: 'home',
       component: HomeView,
     },
     {
+      // Ruta para la vista de Podcast, carga diferida para optimización
       path: '/podcast',
       name: 'podcast',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/PodcastView.vue'),
     },
     {
+      // Ruta para la vista de Eventos, se carga de forma perezosa
       path: '/eventos',
       name: 'eventos',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/EventosView.vue'),
     },
-    
+    {
+      // Ruta para la vista de Servicios, carga diferida
+      path: '/servicios',
+      name: 'servicios',
+      component: () => import('../views/ServiciosView.vue'),
+    },
   ],
 })
 

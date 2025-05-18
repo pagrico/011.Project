@@ -127,7 +127,12 @@ export default {
               Eventos
             </router-link>
           </li>
-          
+          <li class="text-center">
+            <router-link to="/servicios" active-class="font-bold text-[#431605]"
+              class="text-[#1F1E1E] hover:text-[#825336] transition-colors duration-300">
+              Servicios
+            </router-link>
+          </li>
         </ul>
 
         <div v-if="loggedIn" class="md:flex md:space-x-4 md:justify-end items-center relative">
