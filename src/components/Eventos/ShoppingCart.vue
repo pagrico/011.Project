@@ -88,3 +88,26 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.vintage-button {
+  background-color: #825336;
+  color: white;
+  transition: all 0.3s ease;
+}
+.vintage-button:hover {
+  background-color: #431605;
+  transform: translateY(-2px);
+}
+.vintage-header {
+  font-family: 'Playfair Display', serif;
+  color: #1F1E1E;
+}
+.vintage-dark {
+  background-color: #431605;
+  color: white;
+}
+.cart-item {
+  border-bottom: 1px dashed #BCAAA1;
+}
+</style>

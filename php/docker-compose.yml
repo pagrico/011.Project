@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_server
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=my_database
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8000:80"
+    environment:
+      - PMA_HOST=mysql_server
+      - PMA_USER=root
+      - PMA_PASSWORD=rootpassword
+    depends_on:
+      - mysql
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php_server
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./uploads:/var/www/html/uploads
+      - ./php.ini:/usr/local/etc/php/php.ini   # Configuración PHP personalizada
+      - ./php.ini:/usr/local/etc/php/conf.d/php.ini   # Ruta alternativa para asegurar que se carga
+    depends_on:
+      - mysql
+    restart: always
+    environment:
+      - PHP_EXTENSIONS=pdo_mysql
+    command: >
+      /bin/sh -c "
+        mkdir -p /var/www/html/uploads/servicios && 
+        chmod -R 777 /var/www/html/uploads && 
+        chown -R www-data:www-data /var/www/html/uploads &&
+        if [ ! -f /usr/local/etc/php/conf.d/php.ini ]; then
+          cp /usr/local/etc/php/php.ini /usr/local/etc/php/conf.d/php.ini
+        fi &&
+        apache2-foreground
+      "
+
+volumes:
+  mysql_data:

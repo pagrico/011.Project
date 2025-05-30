@@ -24,6 +24,7 @@ function eliminarImagen(idx) {
   emit('eliminarImagen', idx)
 }
 function onGestorArchivos(files) {
+ 
   emit('handleGestorArchivos', files)
 }
 </script>

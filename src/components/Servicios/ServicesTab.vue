@@ -24,7 +24,8 @@ const emit = defineEmits(['update'])
 const editingService = ref(null)
 
 function setEditingService(service) {
-  editingService.value = service
+  // Hacer una copia profunda para evitar la mutación reactiva y el bucle infinito
+  editingService.value = JSON.parse(JSON.stringify(service))
 }
 function handleCreatedOrUpdated() {
   editingService.value = null

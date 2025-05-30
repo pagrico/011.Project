@@ -90,10 +90,12 @@
         </div>
 
         <div class="md:col-span-2">
-          <button type="submit" class="vintage-button px-6 py-3 rounded-lg w-full md:w-auto">
-            <i class="fas fa-calendar-plus mr-2"></i> 
-            Crear Evento
-          </button>
+          <div class="flex justify-center mt-4">
+            <button type="submit" class="vintage-button enhanced-btn rounded-lg">
+              <i class="fas fa-calendar-plus mr-2"></i> 
+              Crear Evento
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -159,5 +161,45 @@ export default {
 </script>
 
 <style scoped>
-/* Add any specific styles for this component if needed */
+.vintage-button {
+  background-color: #825336;
+  color: white;
+  transition: all 0.3s cubic-bezier(.4,2,.3,1);
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(130, 83, 54, 0.13);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+.vintage-button:hover {
+  background-color: #431605;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(67, 22, 5, 0.18);
+}
+.vintage-button:active {
+  background-color: #6b3e22;
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(130, 83, 54, 0.18);
+}
+/* Estética mejorada para el botón de crear */
+.enhanced-btn {
+  width: 95%;
+  min-height: 3.5rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin: 0.5rem 0;
+  box-shadow: none;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.enhanced-btn:active {
+  box-shadow: none;
+  transform: scale(0.98);
+}
 </style>

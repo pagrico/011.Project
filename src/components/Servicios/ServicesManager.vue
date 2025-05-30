@@ -60,12 +60,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 const props = defineProps(['services', 'loading'])
 const emit = defineEmits(['update', 'edit'])
 
 const showDeleteModal = ref(false)
 const serviceToDelete = ref(null)
+
+// Inyectar la función de alertas desde App.vue
+const showAlert = inject('showAlert')
 
 function openDeleteModal(service) {
   serviceToDelete.value = service
@@ -84,16 +87,21 @@ async function confirmDelete() {
     const data = await res.json()
     if (data.success) {
       emit('update')
-      window.location.reload()
+      showAlert('El servicio se ha eliminado correctamente.', true)
+      // Espera a que el usuario cierre la alerta antes de recargar
+      setTimeout(() => {
+        window.location.reload()
+      }, 1500) // Ajusta el tiempo según la duración de la alerta
     } else {
-      alert('Error al eliminar: ' + (data.error || ''))
+      showAlert('Error al eliminar: ' + (data.error || ''), false)
     }
   } catch (e) {
-    alert('Error de red al eliminar')
+    showAlert('Error de red al eliminar', false)
   } finally {
     showDeleteModal.value = false
     serviceToDelete.value = null
   }
+  
 }
 
 function parsePrice(value) {
@@ -159,3 +167,40 @@ function editService(service) {
   })
 }
 </script>
+
+<style scoped>
+.btn-primary {
+  background-color: #825336;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary:hover {
+  background-color: #431605;
+}
+.btn-secondary {
+  background-color: #B7CDDA;
+  color: #431605;
+  transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+  background-color: #BCAA81;
+}
+.admin-card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+.admin-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+.admin-card-header {
+  background: linear-gradient(90deg, #BCAA81, #C18F67);
+  color: white;
+  font-family: 'Playfair Display', serif;
+  padding: 1rem 1.5rem;
+}
+</style>

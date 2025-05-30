@@ -1,416 +1,354 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap');
 @import 'tailwindcss';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --light-blue: #DBE6ED;
+    --medium-blue: #B7CDDA;
+    --sage: #BCAA81;
+    --tan: #C18F67;
+    --brown: #825336;
+    --dark-brown: #431605;
+    --black: #1F1E1E;
+    --accent: #BCAAA1;
+}
+
+/* Tipografía y fondo general */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #DBE6ED;
+    font-family: 'Raleway', sans-serif;
+    background-color: var(--light-blue);
+    color: var(--black);
 }
 
-.vintage-card {
-    border: 1px solid #BCAAA1;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: var(--medium-blue);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-link {
+    position: relative;
+}
+.nav-link:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--accent);
+    transition: width 0.3s ease;
+}
+.nav-link:hover:after {
+    width: 100%;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: var(--accent);
+    color: var(--black);
     transition: all 0.3s ease;
-    background-color: #B7CDDA;
+    position: relative;
+    overflow: hidden;
+}
+.btn-primary:hover {
+    background-color: var(--brown);
+    color: white;
+    transform: translateY(-2px);
+}
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%, -50%);
+    transform-origin: 50% 50%;
+}
+.btn-primary:hover::after {
+    animation: ripple 1s ease-out;
+}
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
 }
 
-.vintage-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.vintage-button {
-    background-color: #825336;
+.btn-secondary {
+    background-color: var(--dark-brown);
     color: white;
     transition: all 0.3s ease;
 }
-
-.vintage-button:hover {
-    background-color: #431605;
+.btn-secondary:hover {
+    background-color: var(--black);
     transform: translateY(-2px);
 }
 
+/* Secciones y tarjetas */
+.section {
+    background-color: var(--medium-blue);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.vintage-card, .service-grid-card, .admin-card, .stat-card, .team-card {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+.vintage-card {
+    border: 1px solid var(--accent);
+    background-color: var(--medium-blue);
+}
+.vintage-card:hover, .service-grid-card:hover, .admin-card:hover, .stat-card:hover, .team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+.service-grid-card {
+    background: linear-gradient(135deg, white 0%, var(--light-blue) 100%);
+    border: 1px solid var(--medium-blue);
+    position: relative;
+    overflow: hidden;
+}
+.service-grid-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--sage), var(--brown));
+}
+.service-grid-card:hover::before {
+    height: 8px;
+}
+.price-tag {
+    background-color: var(--sage);
+    color: var(--dark-brown);
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    transform: rotate(5deg);
+}
+
+/* Vintage y acentos */
 .vintage-header {
     font-family: 'Playfair Display', serif;
-    color: #1F1E1E;
+    color: var(--black);
 }
-
 .vintage-accent {
-    background-color: #BCAAA1;
+    background-color: var(--accent);
 }
-
 .vintage-dark {
-    background-color: #431605;
+    background-color: var(--dark-brown);
     color: white;
 }
-
-.cart-item {
-    border-bottom: 1px dashed #BCAAA1;
+.vintage-border {
+    border: 8px solid transparent;
+    border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23825336" stroke-width="4" stroke-dasharray="10,5"/></svg>') 10;
+    position: relative;
+}
+.vintage-border::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--sage), var(--brown), var(--dark-brown));
 }
 
-/* Admin Panel Tabs */
+/* Otros estilos */
+.cart-item {
+    border-bottom: 1px dashed var(--accent);
+}
+.gallery-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.gallery-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+.team-card {
+    background-color: var(--light-blue);
+}
+.social-icon {
+    font-size: 2rem;
+    transition: transform 0.3s ease;
+}
+.social-icon:hover {
+    transform: scale(1.2);
+}
+
+/* Footer */
+footer {
+    background-color: var(--black);
+    color: var(--light-blue);
+}
+
+/* Animaciones */
+.fade-in, .animate-fade-in {
+    animation: fadeIn 1s ease-in;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+
+/* Swiper */
+.swiper-button-next, .swiper-button-prev {
+    color: var(--brown) !important;
+    background: rgba(255, 255, 255, 0.8);
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    background: white;
+    transform: scale(1.1);
+}
+.swiper-button-next::after, .swiper-button-prev::after {
+    font-size: 20px !important;
+    font-weight: bold;
+}
+
+/* Review */
+.review-card {
+    background-color: white;
+    border-left: 4px solid var(--sage);
+    position: relative;
+}
+.review-card::before {
+    content: '"';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 60px;
+    color: rgba(188, 170, 129, 0.1);
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+.star-rating .star {
+    color: var(--sage);
+}
+.star-rating .star.empty {
+    color: var(--medium-blue);
+}
+
+/* Admin Panel */
+.admin-panel {
+    background: linear-gradient(135deg, var(--medium-blue) 0%, #a0b9c9 100%);
+    border-top: 3px solid var(--dark-brown);
+    box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+.admin-card-header {
+    background: linear-gradient(90deg, var(--sage), var(--tan));
+    color: white;
+    font-family: 'Playfair Display', serif;
+    padding: 1rem 1.5rem;
+}
+.admin-card-body {
+    padding: 1.5rem;
+}
 .admin-tab {
     padding: 0.75rem 1.5rem;
     cursor: pointer;
     border-bottom: 3px solid transparent;
     transition: all 0.3s ease;
 }
-
-.admin-tab:hover {
-    background-color: rgba(219, 230, 237, 0.5);
-}
-
-.admin-tab.active {
-    border-bottom-color: #825336;
+.admin-tab:hover, .admin-tab.active {
+    border-bottom-color: var(--brown);
+    color: var(--dark-brown);
     font-weight: 500;
-    color: #431605;
 }
 
-/* Modal animation */
+/* Modal */
 .modal-enter {
     opacity: 0;
     transform: scale(0.9);
 }
-
 .modal-enter-active {
     opacity: 1;
     transform: translateX(0);
     transition: opacity 300ms, transform 300ms;
 }
-
 .modal-exit {
     opacity: 1;
 }
-
 .modal-exit-active {
     opacity: 0;
     transform: scale(0.9);
     transition: opacity 300ms, transform 300ms;
 }
 
-/* Form styles */
+/* Formulario */
 .form-group {
     margin-bottom: 1.25rem;
 }
-
 .form-label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #431605;
+    color: var(--dark-brown);
 }
-
 .form-input {
     width: 100%;
     padding: 0.5rem 0.75rem;
-    border: 1px solid #BCAAA1;
+    border: 1px solid var(--accent);
     border-radius: 0.375rem;
     transition: border-color 0.2s;
 }
-
 .form-input:focus {
     outline: none;
-    border-color: #825336;
+    border-color: var(--brown);
     box-shadow: 0 0 0 3px rgba(130, 83, 54, 0.1);
 }
 
-/* Admin card */
-.admin-card {
-    background: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+/* Estados */
+.status-pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+.status-accepted {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+.status-rejected {
+    background-color: #FEE2E2;
+    color: #92400E;
+}
+.status-finished {
+    background-color: #DBEAFE;
+    color: #1E40AF;
 }
 
-.admin-card-header {
-    background-color: #431605;
-    color: white;
-    padding: 1rem 1.5rem;
-    font-family: 'Playfair Display', serif;
+/* Oculta contenido de tabs por defecto, Vue lo controla */
+ /*
+.tab-content {
+    display: none;
 }
-
-.admin-card-body {
-    padding: 1.5rem;
+.tab-content.active {
+    display: block;
 }
-	:root {
-		--light-blue: #DBE6ED;
-		--medium-blue: #B7CDDA;
-		--sage: #BCAA81;
-		--tan: #C18F67;
-		--brown: #825336;
-		--dark-brown: #431605;
-		--black: #1F1E1E;
-	}
-	
-	body {
-		font-family: 'Georgia', serif;
-		background-color: var(--light-blue);
-		color: var(--black);
-	}
-	
-	.service-grid-card {
-		transition: all 0.3s ease;
-		background: linear-gradient(135deg, white 0%, var(--light-blue) 100%);
-		border: 1px solid var(--medium-blue);
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-		position: relative;
-		overflow: hidden;
-	}
-	
-	.service-grid-card:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-	}
-	
-	.service-grid-card::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 5px;
-		background: linear-gradient(90deg, var(--sage), var(--brown));
-	}
-	
-	.service-grid-card:hover::before {
-		height: 8px;
-	}
-	
-	.price-tag {
-		background-color: var(--sage);
-		color: var(--dark-brown);
-		position: absolute;
-		top: 15px;
-		right: 15px;
-		transform: rotate(5deg);
-	}
-	
-	.btn-primary {
-		background-color: var(--brown);
-		color: white;
-		transition: all 0.3s ease;
-		position: relative;
-		overflow: hidden;
-	}
-	
-	.btn-primary:hover {
-		background-color: var(--dark-brown);
-	}
-	
-	.btn-primary::after {
-		content: '';
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		width: 5px;
-		height: 5px;
-		background: rgba(255, 255, 255, 0.5);
-		opacity: 0;
-		border-radius: 100%;
-		transform: scale(1, 1) translate(-50%, -50%);
-		transform-origin: 50% 50%;
-	}
-	
-	.btn-primary:hover::after {
-		animation: ripple 1s ease-out;
-	}
-	
-	@keyframes ripple {
-		0% {
-			transform: scale(0, 0);
-			opacity: 0.5;
-		}
-		100% {
-			transform: scale(20, 20);
-			opacity: 0;
-		}
-	}
-	
-	.btn-secondary {
-		background-color: var(--medium-blue);
-		color: var(--dark-brown);
-		transition: all 0.3s ease;
-	}
-	
-	.btn-secondary:hover {
-		background-color: var(--sage);
-	}
-	
-	.service-detail {
-		background: linear-gradient(135deg, white 0%, var(--light-blue) 100%);
-		border: 1px solid var(--medium-blue);
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-	}
-	
-	.review-card {
-		background-color: white;
-		border-left: 4px solid var(--sage);
-		position: relative;
-	}
-	
-	.review-card::before {
-		content: '"';
-		position: absolute;
-		top: 10px;
-		left: 10px;
-		font-size: 60px;
-		color: rgba(188, 170, 129, 0.1);
-		font-family: Georgia, serif;
-		line-height: 1;
-	}
-	
-	.star-rating .star {
-		color: var(--sage);
-	}
-	
-	.star-rating .star.empty {
-		color: var(--medium-blue);
-	}
-	
-	.admin-panel {
-		background: linear-gradient(135deg, var(--medium-blue) 0%, #a0b9c9 100%);
-		border-top: 3px solid var(--dark-brown);
-		box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.05);
-	}
-	
-	.admin-card {
-		background: white;
-		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-		transition: all 0.3s ease;
-	}
-	
-	.admin-card:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-	}
-	
-	.admin-card-header {
-		background: linear-gradient(90deg, var(--sage), var(--tan));
-		color: white;
-	}
-	
-	.vintage-border {
-		position: relative;
-	}
-	
-	.vintage-border::before {
-		content: "";
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 3px;
-		background: linear-gradient(90deg, var(--sage), var(--brown), var(--dark-brown));
-	}
-	
-	@keyframes fadeIn {
-		from { opacity: 0; transform: translateY(20px); }
-		to { opacity: 1; transform: translateY(0); }
-	}
-	
-	.animate-fade-in {
-		animation: fadeIn 0.6s ease-out forwards;
-	}
-	
-	.delay-1 {
-		animation-delay: 0.2s;
-	}
-	
-	.delay-2 {
-		animation-delay: 0.4s;
-	}
-	
-	.delay-3 {
-		animation-delay: 0.6s;
-	}
-	
-	.swiper-button-next, .swiper-button-prev {
-		color: var(--brown) !important;
-		background: rgba(255, 255, 255, 0.8);
-		width: 40px !important;
-		height: 40px !important;
-		border-radius: 50%;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-		transition: all 0.3s ease;
-	}
-	
-	.swiper-button-next:hover, .swiper-button-prev:hover {
-		background: white;
-		transform: scale(1.1);
-	}
-	
-	.swiper-button-next::after, .swiper-button-prev::after {
-		font-size: 20px !important;
-		font-weight: bold;
-	}
-	
-	.service-icon {
-		font-size: 2.5rem;
-		color: var(--brown);
-		margin-bottom: 1rem;
-	}
-	
-	.stat-card {
-		background: white;
-		border-radius: 8px;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-		transition: all 0.3s ease;
-	}
-	
-	.stat-card:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-	}
-	
-	.stat-value {
-		font-size: 2rem;
-		font-weight: bold;
-		color: var(--dark-brown);
-	}
-	
-	.stat-label {
-		color: var(--brown);
-		font-size: 0.9rem;
-	}
-	
-	.admin-tab {
-		border-bottom: 3px solid transparent;
-		transition: all 0.3s ease;
-	}
-	
-	.admin-tab:hover, .admin-tab.active {
-		border-bottom-color: var(--brown);
-		color: var(--dark-brown);
-	}
-	
-	/* Elimina o comenta estas líneas para que Vue controle la visibilidad de los tabs */
-	/*
-	.tab-content {
-		display: none;
-	}
-	.tab-content.active {
-		display: block;
-	}
-	*/
-	
-	.status-pending {
-		background-color: #FEF3C7;
-		color: #92400E;
-	}
-	
-	.status-accepted {
-		background-color: #D1FAE5;
-		color: #065F46;
-	}
-	
-	.status-rejected {
-		background-color: #FEE2E2;
-		color: #92400E;
-	}
-	
-	.status-finished {
-		background-color: #DBEAFE;
-		color: #1E40AF;
-	}
+*/

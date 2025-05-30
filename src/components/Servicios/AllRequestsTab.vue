@@ -183,3 +183,32 @@ function exportarCSV() {
 import { watch } from 'vue'
 onMounted(fetchSolicitudes)
 </script>
+
+<style scoped>
+.status-pending {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+.status-accepted {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+.status-rejected {
+  background-color: #FEE2E2;
+  color: #92400E;
+}
+.status-finished {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+}
+.btn-primary {
+  background-color: #825336;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary:hover {
+  background-color: #431605;
+}
+</style>

@@ -38,7 +38,24 @@
             </button>
           </div>
         </form>
-        <!-- Eliminado el botón "Cerrar" de la parte inferior -->
+        <!-- MODAL DE FEEDBACK -->
+        <div v-if="modalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 text-center">
+            <div class="flex flex-col items-center mb-4">
+              <span v-if="modalSuccess" class="text-green-600 text-5xl mb-2">
+                <i class="fas fa-check-circle"></i>
+              </span>
+              <span v-else class="text-red-600 text-5xl mb-2">
+                <i class="fas fa-times-circle"></i>
+              </span>
+              <div class="text-xl font-bold mb-2" :class="modalSuccess ? 'text-green-700' : 'text-red-700'">
+                {{ modalTitle }}
+              </div>
+              <div class="text-gray-700">{{ modalMsg }}</div>
+            </div>
+            <button @click="closeModal" class="btn-secondary px-6 py-2 rounded-md font-medium mt-2">Cerrar</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -52,12 +69,72 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      modalVisible: false,
+      modalMsg: '',
+      modalSuccess: false,
+      modalTitle: ''
+    };
+  },
   methods: {
+    showModal(msg, success = false, title = '') {
+      this.modalMsg = msg;
+      this.modalSuccess = success;
+      this.modalTitle = title || (success ? '¡Pago exitoso!' : 'Error');
+      this.modalVisible = true;
+    },
+    closeModal() {
+      this.modalVisible = false;
+      if (this.modalSuccess) {
+        this.$emit("close");
+      }
+    },
     confirmPayment() {
-      console.log("Total recibido: €", this.total.toFixed(2));
-      alert("¡Pago exitoso! Gracias por su compra.");
-      this.$emit("close");
+      // Aquí podrías validar los campos del formulario si lo deseas
+      // Simula éxito siempre, pero podrías poner lógica real
+      this.showModal("¡Pago exitoso! Gracias por su compra.", true, "¡Pago realizado!");
     },
   },
 };
 </script>
+
+<style scoped>
+.vintage-button {
+  background-color: #825336;
+  color: white;
+  transition: all 0.3s ease;
+}
+.vintage-button:hover {
+  background-color: #431605;
+  transform: translateY(-2px);
+}
+.vintage-header {
+  font-family: 'Playfair Display', serif;
+  color: #1F1E1E;
+}
+.vintage-dark {
+  background-color: #431605;
+  color: white;
+}
+.form-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #BCAAA1;
+  border-radius: 0.375rem;
+  transition: border-color 0.2s;
+}
+.form-input:focus {
+  outline: none;
+  border-color: #825336;
+  box-shadow: 0 0 0 3px rgba(130, 83, 54, 0.1);
+}
+.btn-secondary {
+  background-color: #B7CDDA;
+  color: #431605;
+  transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+  background-color: #BCAAA1;
+}
+</style>

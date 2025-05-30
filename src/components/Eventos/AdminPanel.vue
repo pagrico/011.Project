@@ -74,3 +74,52 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.vintage-button {
+  background-color: #825336;
+  color: white;
+  transition: all 0.3s ease;
+}
+.vintage-button:hover {
+  background-color: #431605;
+  transform: translateY(-2px);
+}
+/* Añadido: aplica el color marrón a los botones de tipo submit en formularios de crear y actualizar */
+form button[type="submit"],
+button.update-btn {
+  background-color: #825336 !important;
+  color: white !important;
+  transition: all 0.3s ease;
+}
+form button[type="submit"]:hover,
+button.update-btn:hover {
+  background-color: #431605 !important;
+  color: white !important;
+  transform: translateY(-2px);
+}
+.admin-tab {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  color: #431605;
+  background: none;
+}
+.admin-tab.active {
+  border-bottom-color: #825336;
+  font-weight: 500;
+  color: #431605;
+}
+.admin-tab:hover {
+  background-color: rgba(219, 230, 237, 0.5);
+}
+.vintage-header {
+  font-family: 'Playfair Display', serif;
+  color: #1F1E1E;
+}
+.vintage-dark {
+  background-color: #431605;
+  color: white;
+}
+</style>

@@ -55,3 +55,29 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.vintage-card {
+  border: 1px solid #BCAAA1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  background-color: #B7CDDA;
+}
+.vintage-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.vintage-button {
+  background-color: #825336;
+  color: white;
+  transition: all 0.3s ease;
+}
+.vintage-button:hover {
+  background-color: #431605;
+  transform: translateY(-2px);
+}
+.vintage-header {
+  font-family: 'Playfair Display', serif;
+  color: #1F1E1E;
+}
+</style>

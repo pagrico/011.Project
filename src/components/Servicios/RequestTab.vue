@@ -56,7 +56,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
+
+// Inyectar la función de alertas desde App.vue
+const showAlert = inject('showAlert')
 
 const emit = defineEmits(['showSolicitudModal'])
 
@@ -135,15 +138,43 @@ async function fetchSolicitudes() {
 async function cambiarEstado(req, nuevoEstado) {
   try {
     // Cambia la URL al puerto correcto de tu backend PHP
-    await fetch('http://localhost:8080/Apis/API_solicitud_estado.php', {
+    const response = await fetch('http://localhost:8080/Apis/API_solicitud_estado.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: req.SOL_ID, estado: nuevoEstado })
     })
-    fetchSolicitudes()
+    
+    const data = await response.json()
+    
+    if (data.success) {
+      showAlert(`Solicitud marcada como ${nuevoEstado} correctamente`, true)
+      fetchSolicitudes()
+    } else {
+      showAlert(`Error al cambiar estado: ${data.error || 'Error desconocido'}`, false)
+    }
   } catch (e) {
+    showAlert('No se pudo conectar con el servidor para actualizar el estado.', false)
     errorMsg.value = 'No se pudo conectar con el servidor para actualizar el estado.'
   }
 }
 onMounted(fetchSolicitudes)
 </script>
+
+<style scoped>
+.status-pending {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+.status-accepted {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+.status-rejected {
+  background-color: #FEE2E2;
+  color: #92400E;
+}
+.status-finished {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+}
+</style>

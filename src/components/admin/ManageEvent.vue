@@ -53,9 +53,14 @@
               <label class="form-label">Precio *</label>
               <input v-model.number="editableEvent.price" type="number" required class="form-input" />
             </div>
-            <button type="submit" class="vintage-button px-6 py-3 rounded-lg w-full mt-4">
-              <i class="fas fa-save mr-2"></i> Actualizar Evento
-            </button>
+            <div class="flex justify-center mt-4">
+              <button
+                type="submit"
+                class="vintage-button enhanced-btn"
+              >
+                <i class="fas fa-save mr-2"></i> Actualizar Evento
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -95,6 +100,25 @@
       </div>
     </div>
   </div>
+
+  <!-- MODAL DE FEEDBACK -->
+  <div v-if="modalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 text-center">
+      <div class="flex flex-col items-center mb-4">
+        <span v-if="modalSuccess" class="text-green-600 text-5xl mb-2">
+          <i class="fas fa-check-circle"></i>
+        </span>
+        <span v-else class="text-red-600 text-5xl mb-2">
+          <i class="fas fa-times-circle"></i>
+        </span>
+        <div class="text-xl font-bold mb-2" :class="modalSuccess ? 'text-green-700' : 'text-red-700'">
+          {{ modalTitle }}
+        </div>
+        <div class="text-gray-700">{{ modalMsg }}</div>
+      </div>
+      <button @click="closeModal" class="btn-secondary px-6 py-2 rounded-md font-medium mt-2">Cerrar</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -108,6 +132,11 @@ export default {
       editableEvent: null,
       eventToDeleteId: null,
       eventToDelete: null,
+      // Modal feedback
+      modalVisible: false,
+      modalMsg: '',
+      modalSuccess: false,
+      modalTitle: ''
     };
   },
   methods: {
@@ -163,14 +192,13 @@ export default {
           .then(response => response.json())
           .then(data => {
             if (data.success) {
-              alert("¡Evento actualizado con éxito!");
-              window.location.reload(); // refrescar la pantalla al actualizar
+              this.showModal("El evento se ha actualizado correctamente.", true, "¡Evento actualizado!");
             } else {
-              alert("Error: " + (data.message || "Error al actualizar evento"));
+              this.showModal("Error: " + (data.message || "Error al actualizar evento"), false, "Error al actualizar");
             }
           })
           .catch(error => {
-            alert("Error: " + error.message);
+            this.showModal("Error: " + error.message, false, "Error de red");
           });
       }
     },
@@ -185,15 +213,27 @@ export default {
           .then(response => response.json())
           .then(data => {
             if (data.success) {
-              alert("¡Evento eliminado con éxito!");
-              window.location.reload(); // refrescar la pantalla al eliminar
+              this.showModal("El evento se ha eliminado correctamente.", true, "¡Evento eliminado!");
             } else {
-              alert("Error: " + (data.message || "No se pudo eliminar el evento"));
+              this.showModal("Error: " + (data.message || "No se pudo eliminar el evento"), false, "Error al eliminar");
             }
           })
           .catch(error => {
-            alert("Error: " + error.message);
+            this.showModal("Error: " + error.message, false, "Error de red");
           });
+      }
+    },
+    showModal(msg, success = false, title = '') {
+      this.modalMsg = msg;
+      this.modalSuccess = success;
+      this.modalTitle = title || (success ? '¡Operación exitosa!' : 'Error');
+      this.modalVisible = true;
+    },
+    closeModal() {
+      this.modalVisible = false;
+      // Si fue éxito y era edición o borrado, recarga la página
+      if (this.modalSuccess) {
+        window.location.reload();
       }
     },
     formattedDate(date) {
@@ -207,3 +247,32 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.vintage-button {
+  background-color: #825336;
+  color: white;
+  transition: all 0.3s ease;
+}
+.vintage-button:hover {
+  background-color: #431605;
+  transform: translateY(-2px);
+}
+/* Estética mejorada para el botón de actualizar */
+.enhanced-btn {
+  width: 95%;
+  min-height: 3.5rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin: 0.5rem 0;
+  box-shadow: 0 4px 16px rgba(130, 83, 54, 0.10);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.enhanced-btn:active {
+  box-shadow: 0 2px 8px rgba(130, 83, 54, 0.15);
+  transform: scale(0.98);
+}
+</style>

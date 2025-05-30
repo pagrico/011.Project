@@ -37,7 +37,11 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
+
+// Inyectar la función de alertas
+const showAlert = inject('showAlert')
+
 const props = defineProps(['visible', 'serviceTitle'])
 const emit = defineEmits(['close'])
 const name = ref('')
@@ -58,7 +62,7 @@ function closeModal() {
 async function submit() {
   error.value = ''
   if (!name.value.trim() || !email.value.trim() || !message.value.trim()) {
-    error.value = 'Por favor, completa todos los campos.'
+    showAlert('Por favor, completa todos los campos.', false)
     return
   }
   try {
@@ -74,12 +78,33 @@ async function submit() {
     })
     const data = await res.json()
     if (data.success) {
+      showAlert('¡Gracias por contactar! En breve recibirás una respuesta.', true)
       success.value = true
     } else {
-      error.value = data.error || 'No se pudo enviar la consulta.'
+      showAlert('Error al enviar la consulta: ' + (data.error || ''), false)
     }
   } catch (e) {
-    error.value = 'Error de red al enviar el formulario.'
+    showAlert('Error de red al enviar el formulario.', false)
   }
 }
 </script>
+<style scoped>
+.btn-primary {
+  background-color: #825336;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary:hover {
+  background-color: #431605;
+}
+.btn-secondary {
+  background-color: #B7CDDA;
+  color: #431605;
+  transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+  background-color: #BCAA81;
+}
+</style>

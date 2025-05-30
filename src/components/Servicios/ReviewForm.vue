@@ -28,7 +28,11 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
+
+// Inyectar la función de alertas
+const showAlert = inject('showAlert')
+
 const props = defineProps(['serviceId'])
 const emit = defineEmits(['review-added'])
 // Obtener nombre y apellidos del localStorage si existen
@@ -51,7 +55,7 @@ async function submit() {
   successMsg.value = ''
   errorMsg.value = ''
   if (!name.value.trim() || !comment.value.trim() || rating.value < 1) {
-    errorMsg.value = 'Por favor, completa todos los campos y selecciona una valoración.'
+    showAlert('Por favor, completa todos los campos y selecciona una valoración.', false)
     return
   }
   try {
@@ -67,16 +71,32 @@ async function submit() {
     })
     const data = await res.json()
     if (data.success) {
-      successMsg.value = '¡Gracias por tu reseña!'
+      showAlert('¡Gracias por tu reseña!', true)
       rating.value = 0
       name.value = defaultName
       comment.value = ''
       emit('review-added') // Notifica al padre para refrescar
     } else {
-      errorMsg.value = 'Error al enviar la reseña: ' + (data.error || '')
+      showAlert('Error al enviar la reseña: ' + (data.error || ''), false)
     }
   } catch (e) {
-    errorMsg.value = 'Error de red al enviar la reseña'
+    showAlert('Error de red al enviar la reseña', false)
   }
 }
 </script>
+<style scoped>
+.btn-secondary {
+  background-color: #B7CDDA;
+  color: #431605;
+  transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+  background-color: #BCAA81;
+}
+.star-rating .star {
+  color: #BCAA81;
+}
+.star-rating .star.empty {
+  color: #B7CDDA;
+}
+</style>

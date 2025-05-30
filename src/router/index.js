@@ -28,6 +28,12 @@ const router = createRouter({
       name: 'servicios',
       component: () => import('../views/ServiciosView.vue'),
     },
+    {
+      // Ruta para la vista de Ajustes, carga diferida
+      path: '/ajustes',
+      name: 'ajustes',
+      component: () => import('../views/AjustesView.vue'),
+    },
   ],
 })
 

@@ -36,3 +36,21 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.vintage-header {
+  font-family: 'Playfair Display', serif;
+  color: #1F1E1E;
+}
+select {
+  background-color: #fff;
+  border: 1px solid #BCAAA1;
+  color: #431605;
+  font-family: 'Roboto', sans-serif;
+}
+select:focus {
+  outline: none;
+  border-color: #825336;
+  box-shadow: 0 0 0 3px rgba(130, 83, 54, 0.1);
+}
+</style>

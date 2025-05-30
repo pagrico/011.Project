@@ -1,54 +1,62 @@
 <template>
-    <div>
-        <div v-if="cargando" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div v-for="n in 12" :key="n" class="p-4 bg-white rounded-lg shadow-lg">
-                <div class="bg-gray-300 h-48 rounded-t-lg"></div>
-                <div class="mt-4">
-                    <div class="h-4 bg-gray-300 rounded w-3/4"></div>
-                    <div class="h-4 bg-gray-300 rounded w-1/4 mt-2"></div>
+    <div class="font-sans text-warm-black min-h-screen py-12 px-4 sm:px-6 lg:px-8 vintage-bg mt-8">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="font-serif text-4xl md:text-5xl font-semibold text-center mb-2 text-medium-brown mb-6">Emprende Podcast</h1>
+            <p class="text-center text-lg text-[#8C7B6A] mb-12 max-w-3xl mx-auto">
+                Historias inspiradoras de emprendimiento, innovación y crecimiento personal.
+            </p>
+            <div v-if="cargando" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div v-for="n in 6" :key="n" class="video-card bg-white rounded-xl overflow-hidden shadow animate-pulse">
+                    <div class="thumbnail-container aspect-video bg-soft-blue"></div>
+                    <div class="p-6">
+                        <div class="h-6 bg-soft-blue rounded w-3/4 mb-2"></div>
+                        <div class="h-4 bg-soft-blue rounded w-1/2 mb-4"></div>
+                        <div class="h-4 bg-soft-blue rounded w-full mb-2"></div>
+                        <div class="h-4 bg-soft-blue rounded w-5/6"></div>
+                    </div>
                 </div>
-                <div class="mt-4">
-                    <div class="h-3 bg-gray-300 rounded w-full"></div>
-                    <div class="h-3 bg-gray-300 rounded w-5/6 mt-2"></div>
-                    <div class="h-3 bg-gray-300 rounded w-2/3 mt-2"></div>
+            </div>
+            <div v-else>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                    <VideoComponent
+                        v-for="video in videosPaginados"
+                        :key="video.idVideo"
+                        :description="video.descripcion"
+                        :duration="video.duracion"
+                        :videoSrc="`https://www.youtube.com/watch?v=${video.idVideo}`"
+                        class="video-card bg-white rounded-xl overflow-hidden hover:shadow-lg"
+                    />
                 </div>
+                <div class="flex justify-center items-center space-x-2">
+                    <button
+                        @click="paginaAnterior"
+                        :disabled="paginaActual === 1"
+                        class="pagination-btn w-10 h-10 rounded-full flex items-center justify-center border border-soft-blue text-medium-brown hover:border-terracotta"
+                    >
+                        <i class="fas fa-chevron-left text-xs"></i>
+                    </button>
+                    <button
+                        v-for="pagina in numerosPaginas"
+                        :key="pagina"
+                        @click="irAPagina(pagina)"
+                        :class="[
+                            'pagination-btn w-10 h-10 rounded-full flex items-center justify-center border border-soft-blue font-medium text-medium-brown',
+                            { 'active': pagina === paginaActual }
+                        ]"
+                    >
+                        {{ pagina }}
+                    </button>
+                    <button
+                        @click="paginaSiguiente"
+                        :disabled="paginaActual === totalPaginas"
+                        class="pagination-btn w-10 h-10 rounded-full flex items-center justify-center border border-soft-blue text-medium-brown hover:border-terracotta"
+                    >
+                        <i class="fas fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+                <p v-if="videos.length === 0" class="text-center text-warm-beige mt-4">No se encontraron videos para este canal.</p>
+                <p v-if="mensajeError" class="text-center text-red-500 mt-4">{{ mensajeError }}</p>
             </div>
-        </div>
-        <div v-else>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <VideoComponent 
-                    v-for="video in videosPaginados" 
-                    :description="video.descripcion" 
-                    :duration="video.duracion" 
-                    :videoSrc="`https://www.youtube.com/watch?v=${video.idVideo}`" 
-                />
-            </div>
-            <div class="flex justify-center mt-4">
-                <button 
-                    @click="paginaAnterior" 
-                    :disabled="paginaActual === 1" 
-                    class="btn btn-primary mx-2"
-                >
-                    Anterior
-                </button>
-                <button 
-                    v-for="pagina in numerosPaginas" 
-                    :key="pagina" 
-                    @click="irAPagina(pagina)" 
-                    :class="['btn mx-1', { 'btn-active': pagina === paginaActual }]"
-                >
-                    {{ pagina }}
-                </button>
-                <button 
-                    @click="paginaSiguiente" 
-                    :disabled="paginaActual === totalPaginas" 
-                    class="btn btn-primary mx-2"
-                >
-                    Siguiente
-                </button>
-            </div>
-            <p v-if="videos.length === 0" class="text-center text-gray-500 mt-4">No se encontraron videos para este canal.</p>
-            <p v-if="mensajeError" class="text-center text-red-500 mt-4">{{ mensajeError }}</p>
         </div>
     </div>
 </template>
@@ -161,52 +169,98 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Espaciado uniforme entre las tarjetas */
-.grid {
-    margin: 1rem;
+/* Fondo vintage y fuentes */
+.vintage-bg {
+    background-color: #DBE6ED;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2z' fill='%23b7cdda' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
-.btn {
-    padding: 0.5rem 1rem;
-    background-color: #C18F67; /* Botón principal */
-    color: #1F1E1E; /* Texto del botón */
-    border: 2px solid #825336; /* Borde del botón */
-    border-radius: 0.5rem; /* Bordes redondeados */
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+.font-serif {
+    font-family: 'Playfair Display', serif;
 }
-.btn:hover {
-    background-color: #825336; /* Color al pasar el mouse */
-    color: #DBE6ED; /* Texto al pasar el mouse */
-    transform: scale(1.05); /* Efecto de zoom */
+.font-sans {
+    font-family: 'Work Sans', sans-serif;
 }
-.btn:disabled {
-    background-color: #DBE6ED; /* Botón deshabilitado */
-    color: #B7CDDA; /* Texto deshabilitado */
-    cursor: not-allowed;
+
+/* Video Card */
+.video-card {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
-.btn-active {
-    background-color: #431605; /* Botón activo */
-    color: #DBE6ED; /* Texto del botón activo */
-    font-weight: bold;
+.video-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
 }
-.text-gray-500 {
-    color: #B7CDDA; /* Texto gris */
+
+/* Thumbnail */
+.thumbnail-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
 }
-.text-red-500 {
-    color: #ff0000; /* Texto rojo */
+.thumbnail-container::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.1) 100%);
+    z-index: 1;
 }
-.text-center {
-    color: #431605; /* Texto centrado */
+
+/* Duration badge */
+.duration-badge {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: rgba(31, 30, 30, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 2;
 }
+
+/* Pagination */
+.pagination-btn {
+    transition: all 0.2s ease;
+}
+.pagination-btn:hover {
+    background-color: #C18F67;
+    color: white;
+}
+.pagination-btn.active {
+    background-color: #825336;
+    color: white;
+}
+
+/* Read more link */
+.read-more {
+    position: relative;
+}
+.read-more::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: #825336;
+    transition: width 0.3s ease;
+}
+.read-more:hover::after {
+    width: 100%;
+}
+
+/* Colores personalizados */
+.text-warm-beige { color: #BCAEA1; }
+.text-medium-brown { color: #825336; }
+.text-dark-chocolate { color: #431605; }
+.bg-soft-blue { background-color: #B7CDDA; }
+.bg-vintage-blue { background-color: #DBE6ED; }
+.bg-terracotta { background-color: #C18F67; }
+.text-warm-black { color: #1F1E1E; }
+
+/* Skeleton loader */
 .animate-pulse {
     animation: pulse 1.5s ease-in-out infinite;
 }
 @keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 </style>

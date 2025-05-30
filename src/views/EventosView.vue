@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="min-h-screen p-6">
+  <div id="app" class="min-h-screen p-6 mt-10">
     <div class="container mx-auto">
       <!-- Admin Section -->
       <AdminPanel v-if="isAdmin" class="mb-6" :events="events" @update-events="updateEvents" />

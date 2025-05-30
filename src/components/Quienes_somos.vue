@@ -5,9 +5,24 @@
       <div class="img-bx"><img src="../assets/pablo.png" alt=""></div>
       <div class="content">
         <h3>Pablo <br><span>Product Manager</span></h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores saepe incidunt suscipit et voluptas fugit!
-        </p>
+        <ul class="list-none space-y-3">
+          <li class="flex items-start" style="color: #431605;">
+            <span class="inline-block w-3 h-3 rounded-full mr-3 mt-1 flex-shrink-0" style="background-color: #825336;"></span>
+            Fotógrafo y videógrafo profesional con más de 8 años de experiencia en producción audiovisual.
+          </li>
+          <li class="flex items-start" style="color: #431605;">
+            <span class="inline-block w-3 h-3 rounded-full mr-3 mt-1 flex-shrink-0" style="background-color: #BCA1A1;"></span>
+            Especializado en retrato, eventos y edición de video.
+          </li>
+          <li class="flex items-start" style="color: #431605;">
+            <span class="inline-block w-3 h-3 rounded-full mr-3 mt-1 flex-shrink-0" style="background-color: #825336;"></span>
+            Ha colaborado con marcas y artistas para crear contenido visual impactante.
+          </li>
+          <li class="flex items-start" style="color: #431605;">
+            <span class="inline-block w-3 h-3 rounded-full mr-3 mt-1 flex-shrink-0" style="background-color: #BCA1A1;"></span>
+            Apasionado por la creatividad y la innovación tecnológica en el sector audiovisual.
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -15,9 +30,24 @@
     <div class="card reverse">
       <div class="content">
         <h3>Noelia <br><span>Diseñadora</span></h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores saepe incidunt suscipit et voluptas fugit!
-        </p>
+        <ul class="list-none space-y-3">
+          <li class="flex items-start" style="color: #431605;">
+            <span class="inline-block w-3 h-3 rounded-full mr-3 mt-1 flex-shrink-0" style="background-color: #825336;"></span>
+            Experta en gestión de redes sociales y emprendimiento digital.
+          </li>
+          <li class="flex items-start" style="color: #431605;">
+            <span class="inline-block w-3 h-3 rounded-full mr-3 mt-1 flex-shrink-0" style="background-color: #BCA1A1;"></span>
+            Ha liderado proyectos de branding y estrategias de marketing online para pequeñas empresas y startups.
+          </li>
+          <li class="flex items-start" style="color: #431605;">
+            <span class="inline-block w-3 h-3 rounded-full mr-3 mt-1 flex-shrink-0" style="background-color: #825336;"></span>
+            Creativa, analítica y con habilidades de comunicación para potenciar la presencia digital de marcas emergentes.
+          </li>
+          <li class="flex items-start" style="color: #431605;">
+            <span class="inline-block w-3 h-3 rounded-full mr-3 mt-1 flex-shrink-0" style="background-color: #BCA1A1;"></span>
+            Emprendedora con visión estratégica y pasión por el desarrollo de negocios digitales.
+          </li>
+        </ul>
       </div>
       <div class="img-bx"><img src="../assets/Noe.png" alt=""></div>
     </div>

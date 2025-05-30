@@ -19,10 +19,9 @@
     </div>
     <input
       type="file"
-      multiple
       ref="fileInput"
       class="file-input"
-      accept="image/*"
+      accept=".jpg,.jpeg,.png,.gif,.webp,image/jpeg,image/png,image/gif,image/webp"
       @change="onFileChange"
     />
   </div>
@@ -37,7 +36,7 @@
         <div class="font-medium text-[#BCAA81] truncate">{{ img.name }}</div>
         <div class="text-xs text-gray-500">{{ img.extension }}</div>
       </div>
-      <button @click="eliminarImagen(idx)" class="ml-2 text-red-500 hover:text-red-700 px-2 py-1 rounded transition">
+      <button type="button" @click="eliminarImagen(idx)" class="ml-2 text-red-500 hover:text-red-700 px-2 py-1 rounded transition">
         <i class="fas fa-times"></i>
       </button>
     </div>
@@ -62,7 +61,6 @@ const imagenes = ref([]) // [{file, name, extension, preview, url?}]
 watch(
   () => props.images,
   (val) => {
-    console.log('[GestorArchuivos.vue] watcher props.images:', val)
     if (Array.isArray(val)) {
       imagenes.value = val.map(img => {
         if (typeof img === 'string') {
@@ -78,7 +76,6 @@ watch(
         }
         return { url: '', name: '', extension: '' }
       })
-      console.log('[GestorArchuivos.vue] imagenes.value tras map:', [...imagenes.value])
       emitChange()
     }
   },
@@ -104,18 +101,22 @@ function triggerFileInput() {
   fileInput.value && fileInput.value.click()
 }
 function handleFiles(files) {
-  Array.from(files).forEach(file => {
-    if (!file.type.startsWith('image/')) return
-    const extension = file.name.split('.').pop()
-    const preview = URL.createObjectURL(file)
-    imagenes.value.push({
-      file,
-      name: file.name,
-      extension,
-      preview
-    })
-    emitChange()
+  // Solo permite añadir una imagen por vez (la primera)
+  const fileArr = Array.from(files)
+  if (fileArr.length === 0) return
+  const file = fileArr[0]
+  if (!file.type.startsWith('image/')) return
+  const extension = file.name.split('.').pop()
+  const preview = URL.createObjectURL(file)
+  imagenes.value.push({
+    file,
+    name: file.name,
+    extension,
+    preview
   })
+  // Log aquí tras importar
+  console.log('[GestorArchuivos] Imagen importada:', imagenes.value)
+  emitChange()
 }
 function eliminarImagen(idx) {
   // Liberar memoria del preview
@@ -127,7 +128,6 @@ function eliminarImagen(idx) {
 }
 function emitChange() {
   // Devuelve los objetos con file, name, extension, preview, url
-  console.log('[GestorArchuivos.vue] emitChange imagenes.value:', [...imagenes.value])
   emit('change', imagenes.value)
 }
 </script>

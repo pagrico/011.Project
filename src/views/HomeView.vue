@@ -37,32 +37,152 @@ onMounted(() => {
 </script>
 
 <template>
-  <main>
-    <!-- Botón para subir al inicio -->
-    <button
-      v-if="showScrollTopButton"
-      @click="scrollToTop"
-      class="fixed bottom-8 right-8 bg-[#825336] text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-[#C18F67] transition-all duration-300 z-50"
-    >
-      ↑
-    </button>
-
-    <!-- Sección principal -->
-    <section id="section-main" class="min-h-screen flex flex-col justify-center items-center bg-[#DBE6ED] rounded-lg shadow-md">
-      <h1 class="text-6xl sm:text-4xl font-bold text-[#431605] font-poppins mb-4">Que es 011.Project</h1>
-      <p class="text-lg text-[#1F1E1E]">Una plataforma para la gestión de eventos y actividades.</p>
+  <!-- Main Content -->
+  <main class="mt-20 pt-8 pb-16 px-6 md:px-12">
+    <!-- Hero Section -->
+    <section id="inicio" class="mb-20">
+      <div class="container mx-auto">
+        <div class="section p-8 md:p-12">
+          <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center font-poppins" style="color: #431605;">¿Qué es 011.Project?</h1>
+          <!-- Image Gallery -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="gallery-item overflow-hidden rounded-lg vintage-border flex items-center justify-center" style="height: 288px;">
+              <img src="../assets/Estudio1.png" 
+                   alt="Setup podcast" class="w-full h-full object-cover object-center transition duration-500 hover:scale-105" style="aspect-ratio: 4/3;">
+            </div>
+            <div class="gallery-item overflow-hidden rounded-lg vintage-border flex items-center justify-center" style="height: 288px;">
+              <img src="../assets/Estudio2.jpg" 
+                   alt="Comienzos" class="w-full h-full object-cover object-center transition duration-500 hover:scale-105" style="aspect-ratio: 4/3;">
+            </div>
+            <div class="gallery-item overflow-hidden rounded-lg vintage-border flex items-center justify-center" style="height: 288px;">
+              <img src="..\assets\Estudio3.png" 
+                   alt="Podcast" class="w-full h-full object-cover object-center transition duration-500 hover:scale-105" style="aspect-ratio: 4/3;">
+            </div>
+          </div>
+          <div class="max-w-3xl mx-auto">
+            <p class="text-lg mb-6" style="color: #1F1E1E;">
+              011.Project comenzó como un podcast centrado en el emprendimiento empresarial, pero ha evolucionado para convertirse en mucho más. 
+              Lo que empezó como conversaciones sobre negocios y estrategias, se ha transformado en una plataforma integral que ofrece servicios 
+              profesionales especializados para empresas y particulares.
+            </p>
+            <p class="text-lg mb-6" style="color: #1F1E1E;">
+              Contamos con un equipo de agentes expertos en imagen corporativa, publicidad y branding empresarial, listos para ayudarte a llevar 
+              tu proyecto al siguiente nivel. Nuestra misión es combinar el conocimiento práctico del emprendimiento con soluciones profesionales 
+              de alta calidad.
+            </p>
+            <p class="text-lg" style="color: #1F1E1E;">
+              Ya sea que estés comenzando tu negocio o buscando escalar tu empresa establecida, 011.Project ofrece los recursos, la orientación 
+              y los servicios que necesitas para tener éxito en el competitivo mundo empresarial actual.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Sección Quienes Somos -->
-    <section id="section-quienes-somos" class="min-h-screen flex flex-col justify-center items-center bg-[#A6BCCB] rounded-lg shadow-md p-8">
-      <h1 class="text-5xl sm:text-3xl font-bold text-[#431605] mt-12 mb-12 font-poppins text-center">Quienes Somos</h1>
-      <QuienesSomos />
+    <!-- Team Section -->
+    <section id="quienes-somos" class="mb-20 fade-in">
+      <div class="container mx-auto">
+        <div class="section p-8 md:p-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center font-poppins" style="color: #431605;">¿Quiénes somos?</h2>
+          <!-- Contenido HTML del prompt -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="team-card p-6 rounded-lg">
+              <h3 class="text-2xl font-bold mb-4 font-poppins" style="color: #825336;">Nuestra Historia</h3>
+              <p class="mb-4" style="color: #1F1E1E;">
+                011.Project nació de la pasión por el emprendimiento y la necesidad de crear un espacio donde los empresarios pudieran encontrar 
+                no solo inspiración, sino también herramientas prácticas para sus negocios.
+              </p>
+              <p class="mb-4" style="color: #1F1E1E;">
+                Comenzamos como un modesto podcast en 2018, compartiendo historias de emprendedores y analizando casos de estudio. Con el tiempo, 
+                nuestra comunidad creció y con ella, nuestra capacidad para ofrecer servicios más especializados.
+              </p>
+              <p style="color: #1F1E1E;">
+                Hoy somos un equipo multidisciplinario de profesionales comprometidos con el crecimiento empresarial de nuestros clientes y oyentes.
+              </p>
+            </div>
+            <div class="team-card p-6 rounded-lg">
+              <h3 class="text-2xl font-bold mb-4 font-poppins" style="color: #825336;">Nuestro Equipo</h3>
+              <p class="mb-4" style="color: #1F1E1E;">
+                Contamos con especialistas en diversas áreas del marketing y desarrollo empresarial:
+              </p>
+              <ul class="space-y-2" style="color: #1F1E1E;">
+                <li class="flex items-center">
+                  <span class="inline-block w-2 h-2 rounded-full mr-2" style="background-color: #BCA1A1;"></span>
+                  Expertos en branding e identidad corporativa
+                </li>
+                <li class="flex items-center">
+                  <span class="inline-block w-2 h-2 rounded-full mr-2" style="background-color: #BCA1A1;"></span>
+                  Estrategas de marketing digital
+                </li>
+                <li class="flex items-center">
+                  <span class="inline-block w-2 h-2 rounded-full mr-2" style="background-color: #BCA1A1;"></span>
+                  Consultores en desarrollo empresarial
+                </li>
+                <li class="flex items-center">
+                  <span class="inline-block w-2 h-2 rounded-full mr-2" style="background-color: #BCA1A1;"></span>
+                  Diseñadores gráficos y de experiencia de usuario
+                </li>
+                <li class="flex items-center">
+                  <span class="inline-block w-2 h-2 rounded-full mr-2" style="background-color: #BCA1A1;"></span>
+                  Productores de contenido multimedia
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Debajo, el componente QuienesSomos -->
+          <div class="mt-16">
+            <QuienesSomos />
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer id="footer" class="min-h-screen flex justify-center items-center bg-[#DBE6ED] rounded-lg shadow-md">
-      <p class="text-[#825336]">© 2025 Mi Proyecto</p>
-    </footer>
+    <!-- Social Media Section -->
+    <section id="redes" class="mb-20 fade-in">
+      <div class="container mx-auto">
+        <div class="section p-8 md:p-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center font-poppins" style="color: #431605;">Síguenos en redes</h2>
+          <div class="flex flex-wrap justify-center gap-8 md:gap-16">
+          <a href="https://www.instagram.com/011.project/?hl=en" class="flex flex-col items-center group" target="_blank" rel="noopener">
+            <div class="social-icon mb-2" style="color: #BCA1A1;">
+            <i class="fab fa-instagram"></i>
+            </div>
+            <span class="text-lg font-medium group-hover:underline" style="color: #1F1E1E;">Instagram</span>
+          </a>
+          <a href="https://www.youtube.com/channel/UC9D4KMFefAZj1ra3h-BX2fg" class="flex flex-col items-center group" target="_blank" rel="noopener">
+            <div class="social-icon mb-2" style="color: #BCA1A1;">
+            <i class="fab fa-youtube"></i>
+            </div>
+            <span class="text-lg font-medium group-hover:underline" style="color: #1F1E1E;">YouTube</span>
+          </a>
+          <a href="https://open.spotify.com/show/0R69JWnRzzmYl3weiLtTab" class="flex flex-col items-center group" target="_blank" rel="noopener">
+            <div class="social-icon mb-2" style="color: #BCA1A1;">
+            <i class="fab fa-spotify"></i>
+            </div>
+            <span class="text-lg font-medium group-hover:underline" style="color: #1F1E1E;">Spotify</span>
+          </a>
+          <a href="https://www.linkedin.com/company/011-project/" class="flex flex-col items-center group" target="_blank" rel="noopener">
+            <div class="social-icon mb-2" style="color: #BCA1A1;">
+            <i class="fab fa-linkedin"></i>
+            </div>
+            <span class="text-lg font-medium group-hover:underline" style="color: #1F1E1E;">LinkedIn</span>
+          </a>
+          <a href="https://www.tiktok.com/@011.project" class="flex flex-col items-center group" target="_blank" rel="noopener">
+            <div class="social-icon mb-2" style="color: #BCA1A1;">
+            <i class="fab fa-tiktok"></i>
+            </div>
+            <span class="text-lg font-medium group-hover:underline" style="color: #1F1E1E;">TikTok</span>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=100095475000810" class="flex flex-col items-center group" target="_blank" rel="noopener">
+            <div class="social-icon mb-2" style="color: #BCA1A1;">
+            <i class="fab fa-facebook"></i>
+            </div>
+            <span class="text-lg font-medium group-hover:underline" style="color: #1F1E1E;">Facebook</span>
+          </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 
@@ -202,5 +322,17 @@ img {
 .card-noelia:hover .text-block {
   transform: translateX(0);
   opacity: 1;
+}
+
+.social-icon {
+  font-size: 2rem;
+  color: #BCA1A1;
+  margin-bottom: 1rem;
+  transition: transform 0.3s, color 0.3s;
+}
+.group:hover .social-icon,
+.group:focus .social-icon {
+  transform: scale(1.2);
+  color: #825336 !important; /* Marrón oscuro */
 }
 </style>

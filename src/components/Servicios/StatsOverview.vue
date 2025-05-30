@@ -27,3 +27,25 @@ const props = defineProps([
   'monthRevenue'
 ])
 </script>
+
+<style scoped>
+.stat-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #431605;
+}
+.stat-label {
+  color: #825336;
+  font-size: 0.9rem;
+}
+</style>
