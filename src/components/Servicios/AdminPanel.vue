@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Eliminar el componente de ALERTA GLOBAL ya que usaremos el que viene de App.vue -->
+    <!-- Panel de administración de servicios con pestañas y estadísticas -->
     <section
       class="admin-panel rounded-lg mb-8"
       :class="{ 'admin-panel-collapsed': !expanded }"
@@ -14,7 +14,6 @@
         <div class="flex items-center gap-2">
           <span v-if="!expanded" class="admin-panel-icon">
             <!-- Icono de herramientas (FontAwesome o SVG) -->
-            
           </span>
           <h2 class="text-2xl font-bold text-[#431605] mb-0 select-none">
             Panel de Administración
@@ -39,23 +38,28 @@
       </div>
       <transition name="fade">
         <div v-show="expanded">
+          <!-- Pestañas de administración -->
           <AdminTabs :activeTab="activeTab" @tab-change="activeTab = $event" />
+          <!-- Estadísticas generales -->
           <StatsOverview
             :activeServices="activeServices"
             :pendingRequests="pendingRequests"
             :averageRating="averageRating"
             :monthRevenue="monthRevenue"
           />
+          <!-- Gestión de servicios -->
           <ServicesTab
             v-if="activeTab === 'servicios'"
             :services="services"
             :loading="loading"
             @update="refreshServices"
           />
+          <!-- Solicitudes pendientes -->
           <RequestsTab
             v-else-if="activeTab === 'requests'"
             @showSolicitudModal="emitShowSolicitudModal"
           />
+          <!-- Todas las solicitudes -->
           <AllRequestsTab
             v-if="activeTab === 'all-requests'"
             @showSolicitudModal="emitShowSolicitudModal"

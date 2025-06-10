@@ -1,38 +1,38 @@
 <template>
   <div class="fixed inset-0 bg-gray-600 bg-opacity-50 z-50 flex items-center justify-center">
     <div class="vintage-card p-6 w-full max-w-lg mx-auto">
+      <!-- Título del modal -->
       <h2 class="text-xl font-serif mb-4 section-title">Editar Usuario</h2>
       
       <div class="space-y-4 mt-6">
+        <!-- Campos de nombre y apellidos -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium mb-1">Nombre</label>
             <input type="text" class="vintage-input w-full" v-model="usuarioLocal.nombre">
           </div>
-          
           <div>
             <label class="block text-sm font-medium mb-1">Apellidos</label>
             <input type="text" class="vintage-input w-full" v-model="usuarioLocal.apellidos">
           </div>
         </div>
-        
+        <!-- Campos de email y teléfono -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium mb-1">Email</label>
             <input type="email" class="vintage-input w-full" v-model="usuarioLocal.email">
           </div>
-          
           <div>
             <label class="block text-sm font-medium mb-1">Teléfono</label>
             <input type="tel" class="vintage-input w-full" v-model="usuarioLocal.telefono">
           </div>
         </div>
-        
+        <!-- Campo de login solo lectura -->
         <div>
           <label class="block text-sm font-medium mb-1">Login</label>
           <input type="text" class="vintage-input w-full bg-gray-100" v-model="usuarioLocal.login" readonly>
         </div>
-        
+        <!-- Selector de rol -->
         <div>
           <label class="block text-sm font-medium mb-1">Rol</label>
           <select class="vintage-input w-full" v-model="usuarioLocal.rol">
@@ -40,18 +40,17 @@
             <option value="2">Usuario</option>
           </select>
         </div>
-        
+        <!-- Opción para resetear contraseña -->
         <div class="flex items-center justify-between">
           <label class="flex items-center">
             <input type="checkbox" class="form-checkbox h-5 w-5 text-darkbutton" v-model="resetPassword">
             <span class="ml-2 text-sm">Resetear contraseña</span>
           </label>
-          
           <div v-if="resetPassword" class="w-1/2">
             <input type="text" class="vintage-input w-full" v-model="nuevaPassword" placeholder="Nueva contraseña">
           </div>
         </div>
-        
+        <!-- Botones de acción: guardar o cancelar -->
         <div class="flex space-x-3 mt-6">
           <button class="vintage-button w-1/2" @click="guardar" :disabled="loading">
             <span v-if="loading">

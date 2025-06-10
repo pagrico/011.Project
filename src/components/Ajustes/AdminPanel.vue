@@ -2,7 +2,7 @@
   <div class="vintage-card p-6 mb-8">
     <h2 class="text-2xl font-serif mb-6 section-title">Administrador de Usuarios</h2>
     
-    <!-- Buscador -->
+    <!-- Buscador de usuarios por nombre o email -->
     <div class="mb-6 flex items-center">
       <div class="relative flex-grow">
         <span class="absolute left-3 top-1/2 transform -translate-y-1/4 text-darkbutton">
@@ -13,12 +13,13 @@
                v-model="busqueda"
                @input="filtrarUsuarios">
       </div>
+      <!-- Botón para mostrar/ocultar filtros -->
       <button class="vintage-button ml-4" @click="toggleFiltros">
         <i class="fas fa-filter mr-2"></i> Filtros
       </button>
     </div>
     
-    <!-- Filtros (ocultos por defecto) -->
+    <!-- Filtros avanzados (rol y orden) -->
     <div v-if="mostrarFiltros" class="bg-white p-4 mb-6 rounded-lg shadow-sm">
       <div class="flex flex-wrap gap-4">
         <div class="w-full sm:w-auto">
@@ -38,6 +39,7 @@
           </select>
         </div>
         <div class="w-full sm:w-auto mt-auto">
+          <!-- Botón para limpiar todos los filtros -->
           <button class="vintage-button ml-3 px-4 py-2 text-sm flex items-center justify-center" @click="limpiarFiltros">
             <i class="fas fa-broom mr-2"></i> Limpiar filtros
           </button>
@@ -45,7 +47,7 @@
       </div>
     </div>
     
-    <!-- Tabla de usuarios -->
+    <!-- Tabla de usuarios con acciones -->
     <div v-if="loading" class="flex justify-center py-12">
       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-darkbutton"></div>
     </div>
@@ -62,21 +64,24 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
+            <!-- Itera sobre los usuarios filtrados y muestra cada uno -->
             <tr v-for="usuario in usuariosFiltrados" :key="usuario.id">
               <td class="px-6 py-4 whitespace-nowrap">{{ usuario.nombre }} {{ usuario.apellidos }}</td>
               <td class="px-6 py-4 whitespace-nowrap">{{ usuario.email }}</td>
               <td class="px-6 py-4 whitespace-nowrap">{{ usuario.telefono || '-' }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <!-- Reemplazar selector por texto simple -->
+                <!-- Muestra el rol del usuario con color distintivo -->
                 <span class="py-1 px-2 rounded-lg text-sm"
                       :class="usuario.rol == 1 ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'">
                   {{ usuario.rol == 1 ? 'Administrador' : 'Usuario' }}
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
+                <!-- Botón para editar usuario -->
                 <button class="text-darkbutton hover:text-button mr-3" @click="editarUsuario(usuario)">
                   <i class="fas fa-edit"></i>
                 </button>
+                <!-- Botón para eliminar usuario -->
                 <button class="text-red-500 hover:text-red-700" @click="eliminarUsuario(usuario.id)">
                   <i class="fas fa-trash-alt"></i>
                 </button>
@@ -86,17 +91,19 @@
         </table>
       </div>
       
-      <!-- Paginación -->
+      <!-- Paginación de la tabla de usuarios -->
       <div class="flex items-center justify-between mt-6">
         <div class="text-sm text-gray-600">
           Mostrando {{ Math.min(1, usuariosFiltrados.length) }} a {{ Math.min(paginaActual * itemsPorPagina, usuariosFiltrados.length) }} de {{ usuariosFiltrados.length }} usuarios
         </div>
         <div class="flex space-x-2">
+          <!-- Botón página anterior -->
           <button class="vintage-button-secondary px-3 py-1" 
                   @click="cambiarPagina(paginaActual - 1)" 
                   :disabled="paginaActual === 1">
             <i class="fas fa-chevron-left"></i>
           </button>
+          <!-- Botones de número de página -->
           <button v-for="pagina in paginasTotales" 
                   :key="pagina" 
                   @click="cambiarPagina(pagina)" 
@@ -106,6 +113,7 @@
                   ]">
             {{ pagina }}
           </button>
+          <!-- Botón página siguiente -->
           <button class="vintage-button-secondary px-3 py-1" 
                   @click="cambiarPagina(paginaActual + 1)" 
                   :disabled="paginaActual === paginasTotales">
@@ -116,7 +124,7 @@
     </div>
   </div>
   
-  <!-- Modal fuera del componente principal para que ocupe toda la pantalla -->
+  <!-- Modal de edición de usuario (teleportado al body) -->
   <Teleport to="body">
     <EditarUsuarioModal 
       v-if="usuarioEditar"

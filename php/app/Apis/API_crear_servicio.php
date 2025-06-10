@@ -4,13 +4,14 @@ ini_set('display_startup_errors', 1); // For development only
 error_reporting(E_ALL); // For development only
 
 // --- Debug Logging ---
+// Archivo de log para depuración de la creación de servicios
 $debug_log_file = __DIR__ . '/crear_servicio_debug.log';
 $log_entry = "Timestamp: " . date('Y-m-d H:i:s') . "\n";
 $log_entry .= "Request Method: " . ($_SERVER['REQUEST_METHOD'] ?? 'N/A') . "\n";
 $log_entry .= "Content-Type Header: " . ($_SERVER['CONTENT_TYPE'] ?? 'N/A') . "\n";
-// $log_entry .= "All Headers: " . print_r(getallheaders(), true) . "\n"; // Uncomment for very detailed header logging
+// $log_entry .= "All Headers: " . print_r(getallheaders(), true) . "\n"; // Descomenta para log detallado
 
-// CABECERAS CORS
+// CABECERAS CORS para permitir peticiones desde cualquier origen
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');

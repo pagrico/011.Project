@@ -1,4 +1,5 @@
 <template>
+  <!-- Modal de pago -->
   <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md relative">
       <div class="vintage-dark px-6 py-4 rounded-t-lg flex items-center justify-between">
@@ -12,6 +13,7 @@
         </button>
       </div>
       <div class="p-6">
+        <!-- Formulario de pago simulado -->
         <form @submit.prevent="confirmPayment">
           <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">Número de tarjeta</label>
@@ -38,7 +40,7 @@
             </button>
           </div>
         </form>
-        <!-- MODAL DE FEEDBACK -->
+        <!-- Modal de feedback tras el pago -->
         <div v-if="modalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 text-center">
             <div class="flex flex-col items-center mb-4">

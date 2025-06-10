@@ -2,6 +2,7 @@
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl vintage-header">Próximos Eventos</h1>
 
+    <!-- Filtro por ciudad -->
     <div class="flex items-center">
       <label for="cityFilter" class="mr-2 text-sm font-medium text-gray-700">
         Filtrar por ciudad:

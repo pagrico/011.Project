@@ -1,14 +1,16 @@
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <!-- Editar Evento -->
+    <!-- Sección para editar un evento existente -->
     <div class="admin-card">
       <div class="admin-card-header">
         <h2 class="text-xl">Editar Evento</h2>
       </div>
       <div class="admin-card-body">
+        <!-- Formulario de edición de evento -->
         <form @submit.prevent="submitEditForm">
           <div class="form-group">
             <label class="form-label">Seleccione Evento *</label>
+            <!-- Selector de evento a editar -->
             <select v-model="selectedEventId" class="form-input" @change="loadEventToEdit">
               <option value="">Seleccione un evento</option>
               <option v-for="event in events" :key="event.id" :value="event.id">
@@ -18,29 +20,32 @@
           </div>
 
           <div v-if="editableEvent">
+            <!-- Campo para editar el título del evento -->
             <div class="form-group">
               <label class="form-label">Título *</label>
               <input v-model="editableEvent.title" type="text" required class="form-input" />
             </div>
+            <!-- Campo para editar la descripción -->
             <div class="form-group">
               <label class="form-label">Descripción</label>
               <textarea v-model="editableEvent.description" rows="3" class="form-input"></textarea>
             </div>
+            <!-- Campo para editar la fecha y hora -->
             <div class="form-group">
               <label class="form-label">Fecha y Hora *</label>
               <input v-model="editableEvent.date" type="datetime-local" required class="form-input" />
             </div>
-            <!-- Nuevo campo: Ciudad -->
+            <!-- Campo para editar la ciudad -->
             <div class="form-group">
               <label class="form-label">Ciudad *</label>
               <input v-model="editableEvent.city" type="text" required class="form-input" />
             </div>
-            <!-- Nuevo campo: Dirección -->
+            <!-- Campo para editar la dirección -->
             <div class="form-group">
               <label class="form-label">Dirección</label>
               <input v-model="editableEvent.address" type="text" class="form-input" />
             </div>
-            <!-- Nuevo campo: Visibilidad -->
+            <!-- Campo para editar la visibilidad -->
             <div class="form-group">
               <label class="form-label">Visibilidad *</label>
               <select v-model="editableEvent.visibilidad" class="form-input" required>
@@ -48,7 +53,7 @@
                 <option value="Privado">Privado</option>
               </select>
             </div>
-            <!-- Nuevo campo Precio -->
+            <!-- Campo para editar el precio -->
             <div class="form-group">
               <label class="form-label">Precio *</label>
               <input v-model.number="editableEvent.price" type="number" required class="form-input" />
@@ -66,15 +71,17 @@
       </div>
     </div>
 
-    <!-- Eliminar Evento -->
+    <!-- Sección para eliminar un evento existente -->
     <div class="admin-card">
       <div class="admin-card-header bg-red-700">
         <h2 class="text-xl">Eliminar Evento</h2>
       </div>
       <div class="admin-card-body">
+        <!-- Formulario de eliminación de evento -->
         <form @submit.prevent="submitDeleteForm">
           <div class="form-group">
             <label class="form-label">Seleccione Evento *</label>
+            <!-- Selector de evento a eliminar -->
             <select v-model="eventToDeleteId" class="form-input" @change="loadEventToDelete">
               <option value="">Seleccione un evento</option>
               <option v-for="event in events" :key="event.id" :value="event.id">
@@ -86,9 +93,9 @@
           <div v-if="eventToDelete">
             <div class="mt-4 p-4 border border-red-200 bg-red-50 rounded-lg">
               <h4 class="font-bold text-red-800">{{ eventToDelete.title }}</h4>
-              <!-- Se muestra la fecha del evento -->
+              <!-- Muestra la fecha del evento a eliminar -->
               <p class="text-sm text-red-600 mt-1">{{ formattedDate(eventToDelete.date) }}</p>
-              <!-- Nuevo campo Precio -->
+              <!-- Muestra el precio del evento a eliminar -->
               <p class="text-sm text-gray-600 mt-1">Precio: {{ eventToDelete.price || "N/A" }}</p>
               <p class="text-sm text-gray-600 mt-2">Esta acción no se puede deshacer.</p>
               <button type="submit" class="bg-red-600 text-white px-6 py-3 rounded-lg w-full mt-4 hover:bg-red-700 transition">
@@ -101,7 +108,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE FEEDBACK -->
+  <!-- Modal de feedback para mostrar mensajes de éxito o error -->
   <div v-if="modalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 text-center">
       <div class="flex flex-col items-center mb-4">
@@ -123,16 +130,21 @@
 
 <script>
 export default {
+  // Recibe la lista de eventos como propiedad
   props: {
     events: Array,
   },
   data() {
     return {
+      // ID del evento seleccionado para editar
       selectedEventId: null,
+      // Objeto editable del evento
       editableEvent: null,
+      // ID del evento seleccionado para eliminar
       eventToDeleteId: null,
+      // Objeto del evento a eliminar
       eventToDelete: null,
-      // Modal feedback
+      // Estado del modal de feedback
       modalVisible: false,
       modalMsg: '',
       modalSuccess: false,
@@ -140,21 +152,20 @@ export default {
     };
   },
   methods: {
+    // Carga los datos del evento seleccionado para editar
     loadEventToEdit() {
       const selected = this.events.find(event => event.id === this.selectedEventId);
       if (selected) {
-        // Si el evento ya tiene un campo 'date' (por ejemplo, si fue editado antes), úsalo.
-        // Si no, usa 'fecha_evento' y conviértelo al formato adecuado para datetime-local.
+        // Maneja el formato de la fecha para el input datetime-local
         let eventDate;
         if (selected.date) {
-          // Si ya existe el campo 'date' (por ejemplo, tras una edición previa)
           eventDate = new Date(selected.date);
         } else if (selected.fecha_evento) {
           eventDate = new Date(selected.fecha_evento);
         } else {
           eventDate = null;
         }
-        // Formatear la fecha para el input datetime-local (YYYY-MM-DDTHH:MM)
+        // Formatea la fecha para el input
         const formattedDate = eventDate && !isNaN(eventDate.getTime())
           ? eventDate.toISOString().slice(0,16)
           : '';
@@ -162,15 +173,17 @@ export default {
           ...selected,
           city: selected.ciudad,
           date: formattedDate,
-          address: selected.address  // se agrega el mapeo de address
+          address: selected.address  // mapeo de dirección
         };
       } else {
         this.editableEvent = null;
       }
     },
+    // Carga el evento seleccionado para eliminar
     loadEventToDelete() {
       this.eventToDelete = this.events.find(event => event.id === this.eventToDeleteId) || null;
     },
+    // Envía el formulario de edición
     submitEditForm() {
       if (this.editableEvent) {
         const payload = {
@@ -180,7 +193,7 @@ export default {
           ciudad: this.editableEvent.city,
           price: this.editableEvent.price,
           descripcion: this.editableEvent.description,
-          address: this.editableEvent.address || '', // se cambia de "calle" a "address"
+          address: this.editableEvent.address || '', // dirección
           capacidad_maxima: this.editableEvent.capacidad_maxima || '',
           visibilidad: this.editableEvent.visibilidad || 'Público'
         };
@@ -202,6 +215,7 @@ export default {
           });
       }
     },
+    // Envía el formulario de eliminación
     submitDeleteForm() {
       if (this.eventToDelete) {
         const payload = { id: this.eventToDelete.id };
@@ -223,19 +237,21 @@ export default {
           });
       }
     },
+    // Muestra el modal de feedback
     showModal(msg, success = false, title = '') {
       this.modalMsg = msg;
       this.modalSuccess = success;
       this.modalTitle = title || (success ? '¡Operación exitosa!' : 'Error');
       this.modalVisible = true;
     },
+    // Cierra el modal y recarga la página si la operación fue exitosa
     closeModal() {
       this.modalVisible = false;
-      // Si fue éxito y era edición o borrado, recarga la página
       if (this.modalSuccess) {
         window.location.reload();
       }
     },
+    // Formatea la fecha a un formato legible en español
     formattedDate(date) {
       const eventDate = new Date(date);
       return eventDate.toLocaleDateString("es-ES", {

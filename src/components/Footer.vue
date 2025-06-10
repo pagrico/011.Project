@@ -1,4 +1,5 @@
 <template>
+  <!-- Pie de página con información, enlaces y contacto -->
   <footer class="py-12 px-6 md:px-12 ">
     <div class="container mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">

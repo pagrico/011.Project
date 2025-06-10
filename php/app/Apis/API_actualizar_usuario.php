@@ -1,31 +1,33 @@
 <?php
+// Mostrar errores para depuración (no recomendado en producción)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// CORS headers
+// Configuración de cabeceras CORS para permitir peticiones desde cualquier origen
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Max-Age: 3600');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
 
-// Manejo de preflight
+// Manejo de preflight (peticiones OPTIONS)
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-// Solo permitir POST
+// Solo permitir el método POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['success' => false, 'error' => 'Método no permitido']);
     exit;
 }
 
-// Recibir datos del cuerpo de la petición
+// Recibir y decodificar los datos enviados en el cuerpo de la petición
 $data = json_decode(file_get_contents('php://input'), true);
 
+// Validar que se reciban los datos necesarios y que el id sea numérico
 if (!$data || !isset($data['id']) || !is_numeric($data['id'])) {
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => 'Datos de usuario no válidos']);
@@ -38,7 +40,7 @@ require_once '../conexion/db.php';
 try {
     $conexion->beginTransaction();
     
-    // Preparar la consulta base
+    // Preparar la consulta base para actualizar datos del usuario
     $sql = "UPDATE USUARIOS SET 
             USU_NOMBRE = :nombre,
             USU_APELLIDOS = :apellidos,
@@ -74,6 +76,7 @@ try {
     
     // Si se solicita cambiar la contraseña
     if (isset($data['resetPassword']) && $data['resetPassword'] === true && !empty($data['nuevaPassword'])) {
+        // Generar hash de la nueva contraseña
         $passwordHash = password_hash($data['nuevaPassword'], PASSWORD_DEFAULT);
         
         $sqlPassword = "UPDATE USUARIOS SET USU_PASSWORD = :password WHERE USU_USUARIO = :id";
@@ -89,12 +92,14 @@ try {
     echo json_encode(['success' => true, 'message' => 'Usuario actualizado correctamente']);
     
 } catch (PDOException $e) {
+    // Revertir la transacción en caso de error de base de datos
     if ($conexion->inTransaction()) {
         $conexion->rollBack();
     }
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => 'Error de base de datos: ' . $e->getMessage()]);
 } catch (Exception $e) {
+    // Revertir la transacción en caso de cualquier otro error
     if ($conexion->inTransaction()) {
         $conexion->rollBack();
     }

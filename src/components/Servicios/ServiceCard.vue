@@ -1,4 +1,5 @@
 <template>
+  <!-- Tarjeta de servicio individual para la cuadrícula de servicios -->
   <div class="service-grid-card rounded-lg overflow-hidden p-8 relative">
     <div class="service-icon text-center mb-4">
       <!-- Solo icono, sin imágenes -->
@@ -13,6 +14,7 @@
   </div>
 </template>
 <script setup>
+// props: service
 defineProps(['service'])
 </script>
 <style scoped>

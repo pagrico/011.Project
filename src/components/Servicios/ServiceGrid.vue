@@ -1,4 +1,5 @@
 <template>
+  <!-- Cuadrícula de servicios activos -->
   <section class="mb-20">
     <h2 class="text-2xl font-semibold mb-8 text-[#431605] border-b border-[#BCAA81] pb-2">
       Nuestros servicios

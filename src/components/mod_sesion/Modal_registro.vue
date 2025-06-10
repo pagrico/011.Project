@@ -1,100 +1,4 @@
-<script>
-import axios from "axios";
-import TAlert from "@/components/alerts/TAlert.vue";
 
-export default {
-  props: {
-    isOpen: Boolean,
-  },
-  data() {
-    return {
-      form: {
-        nombre: "",
-        apellidos: "",
-        email: "",
-        telefono: "",
-        login: "", // AÑADIDO
-        password: "",
-        confirmPassword: "",
-      },
-      errorMessage: "",
-      successMessage: "",
-    };
-  },
-  components: {
-    TAlert,
-  },
-  methods: {
-    closeModal() {
-      this.$emit("close");
-    },
-    switchToLogin() {
-      this.$emit("switchToLogin");
-    },
-    async submitForm() {
-      this.errorMessage = "";
-      this.successMessage = "";
-
-      if (
-        !this.form.nombre ||
-        !this.form.apellidos ||
-        !this.form.email ||
-        !this.form.telefono ||
-        !this.form.login || // AÑADIDO para comprobar el usuario
-        !this.form.password ||
-        !this.form.confirmPassword
-      ) {
-        this.errorMessage = "Todos los campos son obligatorios.";
-        return;
-      }
-
-      if (this.form.password !== this.form.confirmPassword) {
-        this.errorMessage = "Las contraseñas no coinciden.";
-        return;
-      }
-
-      try {
-        const response = await axios.post(
-          "http://localhost:8080/Apis/API_Registro_Usuario.php",
-          JSON.stringify(this.form), // Cambiado a JSON.stringify
-          {
-            headers: {
-              "Content-Type": "application/json", // Aseguramos que el encabezado sea JSON
-            },
-          }
-        );
-        console.log("Server response:", response.data);
-
-        let data = response.data;
-        if (data.success === true) {
-          this.successMessage = data.message;
-          this.errorMessage = "";
-
-          // Reseteamos formulario
-          this.form = {
-            nombre: "",
-            apellidos: "",
-            email: "",
-            telefono: "",
-            login: "",
-            password: "",
-            confirmPassword: "",
-          };
-        } else {
-          this.successMessage = "";
-          this.errorMessage = data.message;
-        }
-      } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          this.errorMessage = error.response.data.message;
-        } else {
-          this.errorMessage = "Error al conectar con el servidor.";
-        }
-      }
-    },
-  },
-};
-</script>
 
 <template>
   <div
@@ -103,12 +7,14 @@ export default {
   >
     <div class="relative w-full max-w-2xl">
       <div class="relative bg-[#A6BCCB] rounded-lg shadow-sm">
+        <!-- Cabecera del modal -->
         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-[#825336]">
           <h3 class="text-xl font-semibold text-[#431605]">Registro</h3>
           <button
             @click="closeModal"
             class="text-[#825336] bg-transparent hover:bg-[#C18F67] hover:text-white rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center"
           >
+            <!-- Icono de cerrar -->
             <svg
               class="w-3 h-3"
               aria-hidden="true"
@@ -128,8 +34,7 @@ export default {
           </button>
         </div>
         <div class="p-4 md:p-5">
-        
-
+          <!-- Formulario de registro -->
           <form @submit.prevent="submitForm" class="grid gap-4 sm:grid-cols-4">
             <!-- Primera línea: Nombre y Apellidos -->
             <div class="sm:col-span-2">
@@ -237,26 +142,25 @@ export default {
                 class="bg-[#B7CDDA] border border-[#825336] text-[#1F1E1E] text-sm rounded-lg focus:ring-[#C18F67] focus:border-[#C18F67] block w-full p-2.5"
               />
             </div>
-  <!-- Alertas con TAlert -->
-  <div class="sm:col-span-4">
-
-    <TAlert
-    v-if="errorMessage && errorMessage.length > 0"
-    variant="danger"
-    @dismiss="errorMessage = ''"
-    >
-    {{ errorMessage }}
-  </TAlert>
-  <TAlert
-  v-if="successMessage && successMessage.length > 0"
-  variant="success"
-  @dismiss="successMessage = ''"
-  >
-  {{ successMessage }}
-</TAlert>
-</div>        
-<!-- Botón de envío -->
-<div class="sm:col-span-4">
+            <!-- Alertas con TAlert -->
+            <div class="sm:col-span-4">
+              <TAlert
+                v-if="errorMessage && errorMessage.length > 0"
+                variant="danger"
+                @dismiss="errorMessage = ''"
+              >
+                {{ errorMessage }}
+              </TAlert>
+              <TAlert
+                v-if="successMessage && successMessage.length > 0"
+                variant="success"
+                @dismiss="successMessage = ''"
+              >
+                {{ successMessage }}
+              </TAlert>
+            </div>
+            <!-- Botón de envío y enlace para cambiar a login -->
+            <div class="sm:col-span-4">
               <button
                 type="submit"
                 class="w-full text-white bg-[#825336] hover:bg-[#C18F67] focus:ring-4 focus:outline-none focus:ring-[#431605] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -279,7 +183,109 @@ export default {
     </div>
   </div>
 </template>
+<script>
+import axios from "axios";
+import TAlert from "@/components/alerts/TAlert.vue";
 
+export default {
+  props: {
+    isOpen: Boolean,
+  },
+  data() {
+    return {
+      form: {
+        nombre: "",
+        apellidos: "",
+        email: "",
+        telefono: "",
+        login: "", // Campo para el nombre de usuario
+        password: "",
+        confirmPassword: "",
+      },
+      errorMessage: "",
+      successMessage: "",
+    };
+  },
+  components: {
+    TAlert,
+  },
+  methods: {
+    // Cierra el modal de registro
+    closeModal() {
+      this.$emit("close");
+    },
+    // Cambia al modal de inicio de sesión
+    switchToLogin() {
+      this.$emit("switchToLogin");
+    },
+    // Envía el formulario de registro
+    async submitForm() {
+      this.errorMessage = "";
+      this.successMessage = "";
+
+      // Validación de campos obligatorios
+      if (
+        !this.form.nombre ||
+        !this.form.apellidos ||
+        !this.form.email ||
+        !this.form.telefono ||
+        !this.form.login || // Validar usuario
+        !this.form.password ||
+        !this.form.confirmPassword
+      ) {
+        this.errorMessage = "Todos los campos son obligatorios.";
+        return;
+      }
+
+      // Validación de contraseñas
+      if (this.form.password !== this.form.confirmPassword) {
+        this.errorMessage = "Las contraseñas no coinciden.";
+        return;
+      }
+
+      try {
+        // Enviar datos a la API de registro
+        const response = await axios.post(
+          "http://localhost:8080/Apis/API_Registro_Usuario.php",
+          JSON.stringify(this.form),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("Server response:", response.data);
+
+        let data = response.data;
+        if (data.success === true) {
+          this.successMessage = data.message;
+          this.errorMessage = "";
+
+          // Reseteamos formulario
+          this.form = {
+            nombre: "",
+            apellidos: "",
+            email: "",
+            telefono: "",
+            login: "",
+            password: "",
+            confirmPassword: "",
+          };
+        } else {
+          this.successMessage = "";
+          this.errorMessage = data.message;
+        }
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          this.errorMessage = error.response.data.message;
+        } else {
+          this.errorMessage = "Error al conectar con el servidor.";
+        }
+      }
+    },
+  },
+};
+</script>
 <style scoped>
 /* Estilos opcionales */
 </style>

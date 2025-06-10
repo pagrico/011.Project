@@ -1,24 +1,26 @@
 <template>
   <div class="fixed inset-0 bg-gray-600 bg-opacity-50 z-50 flex items-center justify-center">
     <div class="vintage-card p-6 w-full max-w-md mx-auto">
+      <!-- Título del modal -->
       <h2 class="text-xl font-serif mb-4 section-title">Cambiar Contraseña</h2>
       
       <div class="space-y-4 mt-6">
+        <!-- Campo para la contraseña actual -->
         <div>
           <label class="block text-sm font-medium mb-1">Contraseña actual</label>
           <input type="password" class="vintage-input w-full" v-model="passwordActual" placeholder="Ingresa tu contraseña actual">
         </div>
-        
+        <!-- Campo para la nueva contraseña -->
         <div>
           <label class="block text-sm font-medium mb-1">Nueva contraseña</label>
           <input type="password" class="vintage-input w-full" v-model="passwordNueva" placeholder="Ingresa tu nueva contraseña">
         </div>
-        
+        <!-- Campo para confirmar la nueva contraseña -->
         <div>
           <label class="block text-sm font-medium mb-1">Confirmar nueva contraseña</label>
           <input type="password" class="vintage-input w-full" v-model="passwordConfirmar" placeholder="Confirma tu nueva contraseña">
         </div>
-        
+        <!-- Botones de acción: cambiar o cancelar -->
         <div class="flex space-x-3 mt-6">
           <button class="vintage-button w-1/2" @click="cambiarPassword" :disabled="loading">
             <span v-if="loading">

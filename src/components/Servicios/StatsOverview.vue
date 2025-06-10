@@ -1,4 +1,5 @@
 <template>
+  <!-- Tarjetas de estadísticas rápidas del panel de administración de servicios -->
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
     <div class="stat-card p-4">
       <div class="stat-value">{{ activeServices }}</div>

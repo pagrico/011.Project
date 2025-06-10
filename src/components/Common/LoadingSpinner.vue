@@ -1,4 +1,5 @@
 <template>
+  <!-- Spinner de carga centrado -->
   <div class="flex justify-center items-center p-4">
     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-darkbutton"></div>
   </div>

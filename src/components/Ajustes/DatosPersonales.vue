@@ -3,46 +3,48 @@
     <h1 class="text-3xl font-serif font-semibold mb-6 text-darktext">Configuración de Usuario</h1>
     
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Sección 1: Datos personales -->
+      <!-- Sección 1: Datos personales del usuario -->
       <div class="vintage-card p-6">
         <h2 class="text-xl font-serif mb-4 section-title">Datos Personales</h2>
         
         <div class="space-y-4" v-if="!loading">
+          <!-- Campo para el nombre -->
           <div>
             <label class="block text-sm font-medium mb-1">Nombre</label>
             <input type="text" class="vintage-input w-full" v-model="usuario.nombre">
           </div>
-          
+          <!-- Campo para los apellidos -->
           <div>
             <label class="block text-sm font-medium mb-1">Apellidos</label>
             <input type="text" class="vintage-input w-full" v-model="usuario.apellidos">
           </div>
-          
+          <!-- Campo para el email -->
           <div>
             <label class="block text-sm font-medium mb-1">Email</label>
             <input type="email" class="vintage-input w-full" v-model="usuario.email">
           </div>
-          
+          <!-- Campo para el teléfono -->
           <div>
             <label class="block text-sm font-medium mb-1">Teléfono</label>
             <input type="tel" class="vintage-input w-full" v-model="usuario.telefono">
           </div>
-          
+          <!-- Campo para la contraseña (solo muestra y permite cambiar) -->
           <div>
             <label class="block text-sm font-medium mb-1">Contraseña</label>
             <div class="flex items-center">
               <input type="password" class="vintage-input w-full" value="••••••••" readonly>
+              <!-- Botón para abrir el modal de cambio de contraseña -->
               <button class="vintage-button ml-3 px-4 py-2 text-sm flex items-center justify-center" @click="openChangePasswordModal">
                 <i class="fas fa-key mr-2"></i> Cambiar
               </button>
             </div>
           </div>
-          
+          <!-- Campo para el login (solo lectura) -->
           <div>
             <label class="block text-sm font-medium mb-1">Login</label>
             <input type="text" class="vintage-input w-full bg-gray-100" v-model="usuario.login" readonly>
           </div>
-          
+          <!-- Selector de rol solo visible para administradores -->
           <div v-if="isAdmin">
             <label class="block text-sm font-medium mb-1">Rol</label>
             <select class="vintage-input w-full" v-model="usuario.rol">
@@ -50,22 +52,21 @@
               <option value="2">Usuario</option>
             </select>
           </div>
-          
-        
-          
+          <!-- Botón para guardar los cambios personales -->
           <button class="vintage-button mt-4 w-full" @click="guardarDatosPersonales">
             <i class="fas fa-save mr-2"></i> Guardar cambios
           </button>
         </div>
+        <!-- Spinner de carga mientras se obtienen los datos -->
         <div v-else class="flex justify-center items-center h-64">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-darkbutton"></div>
         </div>
       </div>
       
-      <!-- Sección 2: Dirección -->
+      <!-- Sección 2: Dirección del usuario -->
       <DireccionUsuario :userId="userId" :direccion="direccion" @actualizar="cargarDatos" />
       
-      <!-- Sección 3: Métodos de pago -->
+      <!-- Sección 3: Métodos de pago del usuario -->
       <MetodosPago :userId="userId" />
     </div>
   </div>

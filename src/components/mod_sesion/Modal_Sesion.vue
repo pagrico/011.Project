@@ -1,85 +1,4 @@
-<script>
-import TAlert from "../alerts/TAlert.vue";
 
-export default {
-    components: {
-        TAlert,
-    },
-    props: {
-        isOpen: Boolean,
-    },
-    data() {
-        return {
-            identifier: "",
-            password: "",
-            errorMessage: "",
-        };
-    },
-    methods: {
-        closeModal() {
-            this.$emit("close");
-        },
-        switchToRegister() {
-            this.$emit("switchToRegister");
-        },
-        async login() {
-            try {
-                console.log("Datos enviados al servidor:", {
-                    identifier: this.identifier.trim(),
-                    password: this.password.trim(),
-                });
-
-                const response = await fetch("http://localhost:8080/Apis/API_InicioSesion_Usuario.php", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        identifier: this.identifier.trim(),
-                        password: this.password.trim(),
-                    }),
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                console.log("Respuesta de la API:", data);
-
-                if (data.success) {
-                    localStorage.setItem("userId", data.user_id); // Guardar el ID del usuario en localStorage
-                    localStorage.setItem(
-                        "userData",
-                        JSON.stringify({ 
-                            name: data.nombre, 
-                            apellidos: data.apellidos, 
-                            userId: data.user_id,
-                            role: data.rol // Guardar el rol del usuario
-                        })
-                    );
-
-                    this.$emit("updateUser");
-                    this.closeModal();
-                    window.location.reload(); // Refrescar la pantalla después de iniciar sesión
-                } else {
-                    this.setErrorMessage(data.error || "Hubo un problema al iniciar sesión. Por favor, verifica tus datos.");
-                }
-            } catch (error) {
-                console.error("Error en login:", error);
-                this.setErrorMessage("No se pudo conectar con el servidor. Por favor, inténtalo más tarde.");
-            }
-        },
-        setErrorMessage(message) {
-            this.errorMessage = message;
-            setTimeout(() => {
-                this.errorMessage = "";
-            }, 3000);
-        },
-    },
-};
-</script>
 
 <template>
     <div v-if="isOpen"
@@ -115,11 +34,10 @@ export default {
                             <input v-model="password" type="password" id="password" placeholder="••••••••" required
                                 class="bg-[#B7CDDA] border border-[#825336] text-[#1F1E1E] text-sm rounded-lg focus:ring-[#C18F67] focus:border-[#C18F67] block w-full p-2.5" />
                         </div>
-                        <!-- Mensaje de error -->
+                        <!-- Mensaje de error con TAlert -->
                         <TAlert v-if="errorMessage" variant="danger" dismissible @dismiss="errorMessage = ''">
                             {{ errorMessage }}
                         </TAlert>
-                        <!-- El mensaje desaparecerá automáticamente después de 3 segundos -->
                         <!-- Botón de inicio de sesión -->
                         <button type="submit"
                             class="w-full text-white bg-[#825336] hover:bg-[#C18F67] focus:ring-4 focus:outline-none focus:ring-[#431605] font-medium rounded-lg text-sm px-5 py-2.5 text-center">
@@ -137,7 +55,94 @@ export default {
         </div>
     </div>
 </template>
+<script>
+import TAlert from "../alerts/TAlert.vue";
+
+export default {
+    components: {
+        TAlert,
+    },
+    props: {
+        isOpen: Boolean,
+    },
+    data() {
+        return {
+            identifier: "",
+            password: "",
+            errorMessage: "",
+        };
+    },
+    methods: {
+        // Cierra el modal de inicio de sesión
+        closeModal() {
+            this.$emit("close");
+        },
+        // Cambia al modal de registro
+        switchToRegister() {
+            this.$emit("switchToRegister");
+        },
+        // Lógica de login: envía los datos a la API y gestiona la respuesta
+        async login() {
+            try {
+                console.log("Datos enviados al servidor:", {
+                    identifier: this.identifier.trim(),
+                    password: this.password.trim(),
+                });
+
+                const response = await fetch("http://localhost:8080/Apis/API_InicioSesion_Usuario.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        identifier: this.identifier.trim(),
+                        password: this.password.trim(),
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                console.log("Respuesta de la API:", data);
+
+                if (data.success) {
+                    // Guarda datos del usuario en localStorage
+                    localStorage.setItem("userId", data.user_id);
+                    localStorage.setItem(
+                        "userData",
+                        JSON.stringify({ 
+                            name: data.nombre, 
+                            apellidos: data.apellidos, 
+                            userId: data.user_id,
+                            role: data.rol // Guardar el rol del usuario
+                        })
+                    );
+
+                    this.$emit("updateUser");
+                    this.closeModal();
+                    window.location.reload(); // Refrescar la pantalla después de iniciar sesión
+                } else {
+                    this.setErrorMessage(data.error || "Hubo un problema al iniciar sesión. Por favor, verifica tus datos.");
+                }
+            } catch (error) {
+                console.error("Error en login:", error);
+                this.setErrorMessage("No se pudo conectar con el servidor. Por favor, inténtalo más tarde.");
+            }
+        },
+        // Muestra el mensaje de error y lo oculta tras 3 segundos
+        setErrorMessage(message) {
+            this.errorMessage = message;
+            setTimeout(() => {
+                this.errorMessage = "";
+            }, 3000);
+        },
+    },
+};
+</script>
 
 <style scoped>
-/* Opcional: mejora de estilos */
+/* ...existing code... */
 </style>

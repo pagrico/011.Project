@@ -23,6 +23,7 @@ export default {
     this.checkSession();
   },
   computed: {
+    // Iniciales del usuario para el avatar
     userInitials() {
       const nameInitial = this.userName.charAt(0).toUpperCase();
       const apellidoInitial = this.userApellidos.charAt(0).toUpperCase();
@@ -30,33 +31,41 @@ export default {
     },
   },
   methods: {
+    // Abre el modal de sesión
     openSesionModal() {
       this.isSesionModalOpen = true;
       this.isRegistroModalOpen = false;
       this.isMobileMenuOpen = false;
     },
+    // Abre el modal de registro
     openRegistroModal() {
       this.isRegistroModalOpen = true;
       this.isSesionModalOpen = false;
       this.isMobileMenuOpen = false;
     },
+    // Cierra el modal de sesión
     closeSesionModal() {
       this.isSesionModalOpen = false;
     },
+    // Cierra el modal de registro
     closeRegistroModal() {
       this.isRegistroModalOpen = false;
     },
+    // Cambia de sesión a registro
     switchToRegistro() {
       this.closeSesionModal();
       this.openRegistroModal();
     },
+    // Cambia de registro a sesión
     switchToSesion() {
       this.closeRegistroModal();
       this.openSesionModal();
     },
+    // Alterna el menú móvil
     toggleMobileMenu() {
       this.isMobileMenuOpen = !this.isMobileMenuOpen;
     },
+    // Verifica si hay sesión activa
     checkSession() {
       const userData = localStorage.getItem("userData");
       if (userData) {
@@ -68,6 +77,7 @@ export default {
         this.loggedIn = false;
       }
     },
+    // Cierra sesión y limpia datos
     logout() {
       this.loggedIn = false;
       this.userName = '';
@@ -76,9 +86,11 @@ export default {
       localStorage.removeItem("userData");
       localStorage.removeItem("userId");
     },
+    // Alterna el menú desplegable del usuario
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
+    // Actualiza los datos del usuario tras login/registro
     updateUser() {
       this.checkSession();
     },

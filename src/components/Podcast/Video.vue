@@ -1,4 +1,5 @@
 <template>
+    <!-- Tarjeta de video con miniatura, duración y descripción -->
     <div class="video-card bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all">
         <div class="thumbnail-container aspect-video">
             <a :href="youtubeUrl" target="_blank" rel="noopener">
@@ -6,6 +7,7 @@
                     :src="thumbnailUrl"
                     alt="Miniatura del video"
                     class="w-full h-full object-cover object-center" />
+                <!-- Etiqueta de duración del video -->
                 <div class="duration-badge px-3 py-1 rounded-full text-white text-sm flex items-center">
                     <i class="far fa-clock mr-1 text-xs"></i>
                     <span>{{ formattedDuration }}</span>
@@ -13,10 +15,13 @@
             </a>
         </div>
         <div class="p-6">
+            <!-- Título del video -->
             <h3 class="font-serif text-xl font-semibold mb-2 text-dark-chocolate line-clamp-2">
                 <a :href="youtubeUrl" target="_blank" rel="noopener" class="hover:underline">{{ title }}</a>
             </h3>
+            <!-- Descripción truncada -->
             <p class="text-sm text-gray-600 mb-4 line-clamp-3">{{ truncatedDescription }}</p>
+            <!-- Enlace para ver más si la descripción es larga -->
             <a v-if="showReadMore" :href="youtubeUrl" target="_blank" rel="noopener" class="read-more text-terracotta text-sm font-medium inline-flex items-center">
                 Ver más
                 <i class="fas fa-chevron-right ml-1 text-xs"></i>

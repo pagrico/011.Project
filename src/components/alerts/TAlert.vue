@@ -3,9 +3,11 @@
     :class="[variantClasses.wrapper, fixedClasses.wrapper]"
     role="alert"
   >
+    <!-- Contenido del mensaje de alerta -->
     <span :class="[variantClasses.body, fixedClasses.body]">
       <slot />
     </span>
+    <!-- Botón para cerrar la alerta si es dismissible -->
     <button
       v-if="dismissible"
       type="button"

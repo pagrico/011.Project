@@ -1,11 +1,13 @@
 <template>
   <div class="modal-backdrop">
     <div class="modal-content vintage-card p-6 w-full max-w-md mx-auto">
+      <!-- Título del modal: cambia según si se edita o se agrega -->
       <h2 class="text-xl font-serif mb-4 section-title">
         {{ editarMetodo ? 'Editar método de pago' : 'Agregar método de pago' }}
       </h2>
       
       <div class="space-y-4 mt-6">
+        <!-- Selector de tipo de método de pago (solo tarjeta habilitado) -->
         <div>
           <label class="block text-sm font-medium mb-1 text-darktext">Tipo</label>
           <select class="vintage-input w-full" v-model="metodo.tipo" :disabled="editarMetodo">
@@ -19,21 +21,25 @@
           </p>
         </div>
         
+        <!-- Campo para el número de tarjeta -->
         <div v-if="metodo.tipo === 'TARJETA'">
           <label class="block text-sm font-medium mb-1 text-darktext">Número de tarjeta</label>
           <input type="text" class="vintage-input w-full" v-model="metodo.numero" placeholder="1234 5678 9012 3456">
         </div>
         
+        <!-- Campo para la fecha de expiración de la tarjeta -->
         <div v-if="metodo.tipo === 'TARJETA'">
           <label class="block text-sm font-medium mb-1 text-darktext">Fecha de expiración</label>
           <input type="month" class="vintage-input w-full" v-model="metodo.fechaExp">
         </div>
         
+        <!-- Campo para el titular de la tarjeta -->
         <div>
           <label class="block text-sm font-medium mb-1 text-darktext">Titular</label>
           <input type="text" class="vintage-input w-full" v-model="metodo.titular" placeholder="Nombre completo">
         </div>
         
+        <!-- Selector de estado (activo/inactivo) -->
         <div>
           <label class="block text-sm font-medium mb-1 text-darktext">Estado</label>
           <div class="flex items-center space-x-2">
@@ -45,6 +51,7 @@
           </div>
         </div>
         
+        <!-- Botones de acción: guardar o cancelar -->
         <div class="flex space-x-3 mt-6">
           <button class="vintage-button w-1/2" @click="guardar">Guardar</button>
           <button class="vintage-button-secondary w-1/2" @click="$emit('close')">Cancelar</button>

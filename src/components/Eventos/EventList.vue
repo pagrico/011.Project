@@ -1,4 +1,5 @@
 <template>
+  <!-- Lista de eventos en formato de tarjetas -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <div v-if="events.length === 0" class="text-gray-500 italic col-span-3">
       No se encontraron eventos
@@ -9,7 +10,7 @@
       :key="event.id"
       class="vintage-card rounded-lg overflow-hidden"
     >
-      <!-- Se agrega flex column y altura completa al contenedor interno -->
+      <!-- Contenido de cada tarjeta de evento -->
       <div class="p-4 flex flex-col h-full">
         <h3 class="text-xl font-bold vintage-header mb-2">{{ event.title }}</h3>
         <p class="text-gray-700 mb-3">{{ event.description }}</p>
@@ -21,7 +22,7 @@
           <i class="fas fa-map-marker-alt mr-2"></i>
           <span>{{ event.address ? event.address + ', ' : '' }}{{ event.ciudad }}</span>
         </div>
-        <!-- Se envuelve el botón para mantenerlo en la parte inferior -->
+        <!-- Botón para añadir al carrito -->
         <div class="mt-auto">
           <button
             @click="$emit('add-to-cart', event)"
@@ -39,7 +40,7 @@
 <script>
 export default {
   props: {
-    events: Array,
+    events: Array, // Prop que recibe la lista de eventos
   },
   methods: {
     formattedDate(date) {

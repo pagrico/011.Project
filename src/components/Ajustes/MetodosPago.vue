@@ -4,7 +4,6 @@
     
     <div class="space-y-4">
 
-
       <!-- Mensaje cuando no hay métodos de pago -->
       <div v-if="metodosPago.length === 0" class="text-center py-6 text-gray-500 italic">
         No tienes métodos de pago guardados.
@@ -12,26 +11,32 @@
     
       <!-- Lista de métodos de pago -->
       <div v-for="metodo in metodosPago" :key="metodo.id" class="payment-card p-4 rounded-lg">
-        
         <div class="flex justify-between items-start">
           <div>
+            <!-- Tipo de método de pago -->
             <div class="text-xs uppercase text-darkbutton font-semibold mb-1">{{ metodo.tipo }}</div>
+            <!-- Número de tarjeta enmascarado o titular según tipo -->
             <div class="text-sm mb-1">
               <span v-if="metodo.tipo === 'TARJETA'">•••• •••• •••• {{ metodo.numero?.substring(metodo.numero?.length - 4) }}</span>
               <span v-else-if="metodo.tipo === 'PAYPAL'">{{ metodo.titular }}</span>
               <span v-else>{{ metodo.titular }}</span>
             </div>
+            <!-- Titular del método de pago -->
             <div class="text-xs text-gray-600">Titular: {{ metodo.titular }}</div>
+            <!-- Fecha de expiración si existe -->
             <div v-if="metodo.fechaExp" class="text-xs text-gray-600">Expira: {{ formatExpirationDate(metodo.fechaExp) }}</div>
           </div>
           <div class="flex items-center space-x-2">
+            <!-- Switch para activar/desactivar método de pago -->
             <label class="toggle-switch">
               <input type="checkbox" :checked="metodo.activo" @change="toggleMetodoPago(metodo.id, $event)">
               <span class="toggle-slider"></span>
             </label>
+            <!-- Botón para editar método de pago -->
             <button class="text-darkbutton hover:text-button" @click="editarMetodoPago(metodo)">
               <i class="fas fa-edit"></i>
             </button>
+            <!-- Botón para eliminar método de pago -->
             <button class="text-red-500 hover:text-red-700 cursor-pointer" @click="eliminarMetodoPago(metodo.id)">
               <i class="fas fa-trash-alt"></i>
             </button>
@@ -39,7 +44,7 @@
         </div>
       </div>
       
-      <!-- Agregar nuevo método -->
+      <!-- Botón para agregar nuevo método de pago -->
       <div class="border-2 border-dashed border-accent rounded-lg p-4 text-center hover:bg-gray-50 transition-colors cursor-pointer bg-white shadow-sm" @click="showAddMethodModal = true">
         <button class="text-darkbutton hover:text-button font-medium flex items-center justify-center w-full">
           <div class="bg-[#C18F67] text-white rounded-full w-6 h-6 flex items-center justify-center mr-2">
@@ -53,14 +58,12 @@
     <!-- Modal para agregar/editar método de pago -->
     <div class="modal-overlay" v-if="showAddMethodModal">
       <Teleport to="body">
-
-      <AgregarMetodoPagoModal 
-        :editar-metodo="metodoEditar"
-        @close="cerrarModalMetodoPago" 
-        @guardar="guardarMetodoPago" 
-      />
-            </Teleport>
-
+        <AgregarMetodoPagoModal 
+          :editar-metodo="metodoEditar"
+          @close="cerrarModalMetodoPago" 
+          @guardar="guardarMetodoPago" 
+        />
+      </Teleport>
     </div>
   </div>
 </template>

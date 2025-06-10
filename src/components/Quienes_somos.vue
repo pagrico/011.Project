@@ -1,4 +1,5 @@
 <template>
+  <!-- Sección de presentación de los miembros del equipo -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
     <!-- Tarjeta Pablo -->
     <div class="card">

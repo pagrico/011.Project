@@ -3,40 +3,42 @@
     <h2 class="text-xl font-serif mb-4 section-title">Dirección</h2>
     
     <div class="space-y-4" v-if="!loading">
+      <!-- Campo para el código postal -->
       <div>
         <label class="block text-sm font-medium mb-1">Código Postal</label>
         <input type="text" class="vintage-input w-full" v-model="direccionLocal.cp">
       </div>
-      
+      <!-- Campo para la ciudad -->
       <div>
         <label class="block text-sm font-medium mb-1">Ciudad</label>
         <input type="text" class="vintage-input w-full" v-model="direccionLocal.ciudad">
       </div>
-      
+      <!-- Campo para la provincia -->
       <div>
         <label class="block text-sm font-medium mb-1">Provincia</label>
         <input type="text" class="vintage-input w-full" v-model="direccionLocal.provincia">
       </div>
-      
+      <!-- Campo para la calle -->
       <div>
         <label class="block text-sm font-medium mb-1">Calle</label>
         <input type="text" class="vintage-input w-full" v-model="direccionLocal.calle">
       </div>
-      
+      <!-- Campo para el número o puerta -->
       <div>
         <label class="block text-sm font-medium mb-1">Número/Puerta</label>
         <input type="text" class="vintage-input w-full" v-model="direccionLocal.numero" placeholder="Número/Puerta">
       </div>
-      
+      <!-- Campo para el piso o puerta -->
       <div>
         <label class="block text-sm font-medium mb-1">Piso / Puerta</label>
         <input type="text" class="vintage-input w-full" v-model="direccionLocal.piso">
       </div>
-      
+      <!-- Botón para guardar la dirección -->
       <button class="vintage-button mt-4 w-full" @click="guardarDireccion">
         <i class="fas fa-map-marker-alt mr-2"></i> Actualizar dirección
       </button>
     </div>
+    <!-- Spinner de carga mientras se actualiza la dirección -->
     <div v-else class="flex justify-center items-center h-64">
       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-darkbutton"></div>
     </div>

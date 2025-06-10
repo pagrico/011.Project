@@ -16,16 +16,13 @@
               ]"></i>
             </div>
           </div>
-
-          <!-- Título -->
+          <!-- Título del modal según éxito o error -->
           <h3 class="text-center text-xl font-medium mb-2" :class="isSuccess ? 'text-green-700' : 'text-red-700'">
             {{ isSuccess ? '¡Éxito!' : '¡Error!' }}
           </h3>
-          
-          <!-- Mensaje -->
+          <!-- Mensaje del modal -->
           <p class="text-center text-gray-700 mb-6">{{ message }}</p>
-          
-          <!-- Botón -->
+          <!-- Botón para cerrar el modal -->
           <div class="flex justify-center">
             <button 
               @click="close" 

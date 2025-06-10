@@ -1,11 +1,15 @@
 <template>
+  <!-- Tarjeta principal del formulario de creación de eventos -->
   <div class="admin-card">
     <div class="admin-card-header">
       <h2 class="text-xl">Crear Nuevo Evento</h2>
     </div>
     <div class="admin-card-body">
+      <!-- Formulario de creación de evento -->
       <form @submit.prevent="submitForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Columna izquierda del formulario -->
         <div>
+          <!-- Campo: Título del evento -->
           <div class="form-group">
             <label class="form-label">Título del evento *</label>
             <input 
@@ -16,6 +20,7 @@
               placeholder="Ingrese el título del evento" 
             />
           </div>
+          <!-- Campo: Descripción del evento -->
           <div class="form-group">
             <label class="form-label">Descripción</label>
             <textarea 
@@ -25,6 +30,7 @@
               placeholder="Describa su evento"
             ></textarea>
           </div>
+          <!-- Campo: Fecha y hora del evento -->
           <div class="form-group">
             <label class="form-label">Fecha y hora *</label>
             <input 
@@ -36,7 +42,9 @@
           </div>
         </div>
 
+        <!-- Columna derecha del formulario -->
         <div>
+          <!-- Campo: Ciudad -->
           <div class="form-group">
             <label class="form-label">Ciudad *</label>
             <input 
@@ -47,6 +55,7 @@
               placeholder="Ingrese la ciudad" 
             />
           </div>
+          <!-- Campo: Dirección -->
           <div class="form-group">
             <label class="form-label">Dirección</label>
             <input 
@@ -56,6 +65,7 @@
               placeholder="Ingrese la dirección del lugar" 
             />
           </div>
+          <!-- Campo: Capacidad máxima -->
           <div class="form-group">
             <label class="form-label">Capacidad</label>
             <input 
@@ -65,6 +75,7 @@
               placeholder="Máximo de asistentes" 
             />
           </div>
+          <!-- Campo: Visibilidad del evento -->
           <div class="form-group">
             <label class="form-label">Visibilidad *</label>
             <select 
@@ -76,7 +87,7 @@
               <option value="Privado">Privado</option>
             </select>
           </div>
-          <!-- Nuevo campo Precio -->
+          <!-- Campo: Precio del evento -->
           <div class="form-group">
             <label class="form-label">Precio *</label>
             <input 
@@ -89,6 +100,7 @@
           </div>
         </div>
 
+        <!-- Botón para enviar el formulario -->
         <div class="md:col-span-2">
           <div class="flex justify-center mt-4">
             <button type="submit" class="vintage-button enhanced-btn rounded-lg">
@@ -103,28 +115,33 @@
 </template>
 
 <script>
+// Componente para crear un nuevo evento desde el panel de administración
 export default {
   data() {
     return {
+      // Estado reactivo del formulario
       form: {
-        title: "",
-        description: "",
-        date: "",
-        city: "",
-        address: "",
-        capacity: null,
-        visibility: "Público",
-        price: null // nuevo campo precio
+        title: "",         // Título del evento
+        description: "",   // Descripción del evento
+        date: "",          // Fecha y hora del evento
+        city: "",          // Ciudad donde se realiza el evento
+        address: "",       // Dirección del evento
+        capacity: null,    // Capacidad máxima de asistentes
+        visibility: "Público", // Visibilidad por defecto
+        price: null        // Precio del evento
       },
     };
   },
   methods: {
+    // Método para enviar el formulario y crear el evento
     submitForm() {
+      // Validación de campos obligatorios
       if (!this.form.title || !this.form.date || !this.form.city) {
         alert("Por favor, complete todos los campos obligatorios.");
         return;
       }
 
+      // Construcción del payload para la API
       const payload = {
         titulo: this.form.title,
         descripcion: this.form.description,
@@ -136,7 +153,8 @@ export default {
         price: this.form.price
       };
 
-      fetch('http://localhost:8080/Apis/API_crear_evento.php', { // URL corregido
+      // Llamada a la API para crear el evento
+      fetch('http://localhost:8080/Apis/API_crear_evento.php', { // URL de la API
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -148,9 +166,10 @@ export default {
         return response.json();
       })
       .then(data => {
+        // Emitir evento al padre con los datos del nuevo evento
         this.$emit("event-created", { ...payload, id: data.evento_id });
         alert("¡Evento creado exitosamente!");
-        window.location.reload(); // refrescar la página después de crear el evento
+        window.location.reload(); // Refrescar la página tras crear el evento
       })
       .catch(error => {
         alert(error.message);
@@ -161,6 +180,7 @@ export default {
 </script>
 
 <style scoped>
+/* Estilos para el botón vintage principal */
 .vintage-button {
   background-color: #825336;
   color: white;

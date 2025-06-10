@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Botón para abrir/cerrar el panel de administración -->
     <button
       @click="toggleAdminPanel"
       class="vintage-button px-6 py-3 rounded-lg font-medium flex items-center"
@@ -11,8 +12,10 @@
       ></i>
     </button>
 
+    <!-- Panel de administración con pestañas -->
     <div v-if="isAdminPanelOpen" class="mt-4">
       <div class="flex border-b border-gray-200 mb-6">
+        <!-- Pestañas para cambiar entre crear, gestionar y estadísticas -->
         <div
           v-for="tab in tabs"
           :key="tab.id"
@@ -23,12 +26,15 @@
         </div>
       </div>
 
+      <!-- Formulario para crear eventos -->
       <div v-if="activeTab === 'create'">
         <CreateEventForm @event-created="addEvent" />
       </div>
+      <!-- Gestión de eventos existentes -->
       <div v-if="activeTab === 'manage'">
         <ManageEvents :events="events" @update-events="updateEvents" />
       </div>
+      <!-- Estadísticas de eventos -->
       <div v-if="activeTab === 'stats'">
         <EventStatistics :events="events" />
       </div>
